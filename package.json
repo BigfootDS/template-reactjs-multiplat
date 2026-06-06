@@ -9,6 +9,14 @@
     "name": "BigfootDS"
   },
   "description": "Template for a ReactJS app configured to run on Android, iOS, and multiple desktop operating systems.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BigfootDS/template-reactjs-multiplat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BigfootDS/template-reactjs-multiplat/issues"
+  },
+  "homepage": "https://github.com/BigfootDS/template-reactjs-multiplat#readme",
   "scripts": {
     "react:dev": "vite",
     "react:build": "tsc && vite build",
