@@ -1,13 +1,7 @@
-name: CI - Build
+name: Release - Build
 
 on:
-  workflow_run:
-    workflows:
-      - CI - Test
-    types:
-      - completed
-    branches:
-      - main
+  workflow_call: {}
 
 env: 
   APP_NAME: ${{ vars.APP_NAME }}
@@ -23,16 +17,7 @@ permissions:
 # Different output formats and file names and so on - gotta be handled with care, manually.
 # Lots of jobs to run here!
 jobs:
-
-  testing-succeeded:
-    name: Confirm testing workflow succeeded
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "CI - Test passed for ${{ github.event.workflow_run.head_sha }}"
-
   draft-release:
-    needs: [testing-succeeded]
     permissions:
       contents: write
     name: Create Draft Release
@@ -84,7 +69,7 @@ jobs:
   # This job is purely for sanity-checking/testing.
   # If the build fails here, no point attempting to make platform installers. 
   build-react:
-    needs: [testing-succeeded, draft-release]
+    needs: [draft-release]
     name: Build the React App
     runs-on: ubuntu-latest
     steps:
@@ -110,7 +95,7 @@ jobs:
         run: npm run react:build
 
   build-android:
-    needs: [testing-succeeded, build-react, draft-release]
+    needs: [build-react, draft-release]
     name: Build for Android (AAB)
     runs-on: ubuntu-latest
     steps:
@@ -200,7 +185,7 @@ jobs:
           retention-days: 30
 
   build-windows-installer:
-    needs: [testing-succeeded, build-react, draft-release]
+    needs: [build-react, draft-release]
     name: Build for Windows (Installer)
     runs-on: ubuntu-latest
     container: electronuserland/builder:wine
@@ -252,7 +237,7 @@ jobs:
           retention-days: 30
 
   build-windows-portable:
-    needs: [testing-succeeded, build-react, draft-release]
+    needs: [build-react, draft-release]
     name: Build for Windows (Portable)
     runs-on: ubuntu-latest
     container: electronuserland/builder:wine
@@ -305,7 +290,7 @@ jobs:
           retention-days: 30
 
   build-linux-deb:
-    needs: [testing-succeeded, build-react, draft-release]
+    needs: [build-react, draft-release]
     name: Build for Linux (DEB)
     runs-on: ubuntu-latest
     steps:
@@ -353,7 +338,7 @@ jobs:
           retention-days: 30
 
   build-macos-dmg:
-    needs: [testing-succeeded, build-react, draft-release]
+    needs: [build-react, draft-release]
     name: Build for MacOS (DMG)
     runs-on: ubuntu-latest
     steps:
@@ -397,7 +382,7 @@ jobs:
 
   publish-release-and-alert-discord:
     name: Publish the Release and Alert Discord
-    needs: [testing-succeeded, build-android, build-windows-installer, build-windows-portable, build-linux-deb, build-macos-dmg, draft-release]
+    needs: [build-android, build-windows-installer, build-windows-portable, build-linux-deb, build-macos-dmg, draft-release]
     runs-on: ubuntu-latest
     environment: dev
     steps:

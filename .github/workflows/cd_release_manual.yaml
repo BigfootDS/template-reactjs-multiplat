@@ -1,0 +1,43 @@
+name: Release - Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_release:
+        description: Confirm that this release should test and publish main.
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  validate-release-request:
+    name: Confirm manual release request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require the main branch
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: |
+          echo "Run a manual release from the main branch."
+          exit 1
+
+      - name: Require explicit confirmation
+        if: ${{ !inputs.confirm_release }}
+        run: |
+          echo "Select the release confirmation before running this workflow."
+          exit 1
+
+  test:
+    name: Test main before release
+    needs: [validate-release-request]
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci_test.yaml
+
+  release:
+    needs: [test]
+    uses: ./.github/workflows/ci_build.yaml
+    secrets: inherit

@@ -6,11 +6,22 @@ Testing answers whether the application behaves correctly. Packaging answers whe
 
 `CI - Test` runs for pull requests targeting `main` and pushes to `main`. It uses `npm ci` against the committed lockfile, lints the source, installs Chromium, runs the Playwright suite, and uploads the HTML report and failure artifacts for every run that is not cancelled. The one-off release-age override lets CI install the reviewed versions in the lockfile without weakening the local dependency-age policy.
 
-`CI - Build` runs only when `CI - Test` succeeds for `main`. Its test gate is a required dependency of the draft-release, build, and publishing jobs, so release packaging cannot begin after a failed test workflow.
+`CI - Test` and `Release - Build` are reusable workflows. The two release triggers below call them rather than copying their jobs, which keeps automatic and manual release behaviour in sync.
+
+## Choose one release trigger before publishing
+
+The template deliberately includes both release triggers. Pick one before the first production release, then delete the other trigger file:
+
+| Keep this file | It does | Delete this file |
+| --- | --- | --- |
+| `.github/workflows/cd_release_automatic.yaml` | Creates a release after `CI - Test` succeeds on `main`. | `.github/workflows/cd_release_manual.yaml` |
+| `.github/workflows/cd_release_manual.yaml` | Adds a Run workflow button. It requires `main`, an explicit confirmation, and a fresh reusable test run before it releases. | `.github/workflows/cd_release_automatic.yaml` |
+
+Keep `.github/workflows/ci_test.yaml` and `.github/workflows/ci_build.yaml` in either case. They are the shared test and release-build implementations. Leaving both trigger files in place is valid for experimentation, but a manual run after an automatic release creates another version, which is rarely what a product team wants.
 
 ## Release artefacts
 
-`CI - Build` creates the version bump, records the auto-commit SHA as `latest_commit`, then checks out that exact SHA in every packaging and publishing job. That means the version in `package.json`, the release tag, and every uploaded installer come from the same commit.
+`Release - Build` creates the version bump, records the auto-commit SHA as `latest_commit`, then checks out that exact SHA in every packaging and publishing job. That means the version in `package.json`, the release tag, and every uploaded installer come from the same commit.
 
 Upload build artefacts once, then reuse those artefacts for release publishing. Rebuilding in deployment jobs makes it harder to know which commit produced what users download.
 

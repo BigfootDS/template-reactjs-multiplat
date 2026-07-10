@@ -59,9 +59,9 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Add optional Google Play and Steam workflow examples.
   - [x] Move store-specific values to repository variables and secrets.
   - [x] Document required secrets beside each optional workflow.
-- [ ] Decide when release workflows should run.
-  - [ ] Choose between automatic `main` releases and manual dispatch for generated projects.
-  - [ ] Record the decision in the release workflow and documentation.
+- [x] Decide when release workflows should run.
+  - [x] Choose between automatic `main` releases and manual dispatch for generated projects.
+  - [x] Record the decision in the release workflow and documentation.
 
 ## Application metadata and assets
 
