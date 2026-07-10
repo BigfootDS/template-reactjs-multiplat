@@ -28,8 +28,6 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 
 const appMetadata = packageJson.bigfootds
 
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
-
 let win: BrowserWindow | null
 
 app.setName(appMetadata.applicationName)
@@ -97,7 +95,6 @@ function configureCrossOriginIsolation(): void {
 function createWindow() {
   win = new BrowserWindow({
     frame: false,
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     minHeight: appMetadata.electron.window.minHeight,
     minWidth: appMetadata.electron.window.minWidth,
     title: appMetadata.applicationName,

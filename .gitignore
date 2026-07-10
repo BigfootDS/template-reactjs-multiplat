@@ -29,3 +29,11 @@ release/
 dist-electron/
 playwright-report/
 test-results/
+
+# Generated from assets/icon.svg by `npm run capacitor:android:prepare:assets`.
+android/app/src/main/res/drawable*/splash.png
+android/app/src/main/res/drawable/ic_launcher_background.xml
+android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml
+android/app/src/main/res/mipmap-*/ic_launcher*.png
+android/app/src/main/res/mipmap-anydpi-v26/ic_launcher*.xml
+android/app/src/main/res/values/ic_launcher_background.xml

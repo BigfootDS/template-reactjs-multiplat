@@ -70,10 +70,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Expose the safe name and version fields through Vite.
   - [x] Use the fields for the browser title, Electron window, and diagnostics.
   - [x] Use the fields for release names.
-- [ ] Establish source-asset and generated-asset conventions.
-  - [ ] Add placeholder source icons and logos in a documented source location.
-  - [ ] Configure Electron and Capacitor tooling to consume the source assets.
-  - [ ] Document the generated outputs that must stay ignored.
+- [x] Establish source-asset and generated-asset conventions.
+  - [x] Add placeholder source icons and logos in a documented source location.
+  - [x] Configure Electron and Capacitor tooling to consume the source assets.
+  - [x] Document the generated outputs that must stay ignored.
 
 ## Persistence and settings
 
