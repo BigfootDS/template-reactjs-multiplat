@@ -4,7 +4,9 @@
 
 Testing answers whether the application behaves correctly. Packaging answers whether a platform installer can be built. They are related, but they fail for different reasons and should be separate workflows.
 
-The testing workflow should use `npm ci`, lint the source, run the Playwright suite, and preserve the Playwright report when it is useful for diagnosis. The packaging workflow should run only after that work succeeds.
+`CI - Test` runs for pull requests targeting `main` and pushes to `main`. It uses `npm ci` against the committed lockfile, lints the source, installs Chromium, runs the Playwright suite, and uploads the HTML report and failure artifacts for every run that is not cancelled. The one-off release-age override lets CI install the reviewed versions in the lockfile without weakening the local dependency-age policy.
+
+`CI - Build` runs only when `CI - Test` succeeds for `main`. Its test gate is a required dependency of the draft-release, build, and publishing jobs, so release packaging cannot begin after a failed test workflow.
 
 ## Release artefacts
 

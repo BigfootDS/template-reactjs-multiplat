@@ -50,10 +50,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Test Electron-style hash routing.
   - [x] Add a narrow helper for mocking the renderer IPC wrapper.
   - [x] Capture useful browser diagnostics on failure.
-- [ ] Split testing CI from release packaging.
-  - [ ] Add a CI testing workflow that runs `npm ci`, linting, and Playwright.
-  - [ ] Upload Playwright reports when a testing job fails or is not cancelled.
-  - [ ] Make build and release jobs depend on the testing workflow.
+- [x] Split testing CI from release packaging.
+  - [x] Add a CI testing workflow that runs `npm ci`, linting, and Playwright.
+  - [x] Upload Playwright reports when a testing job fails or is not cancelled.
+  - [x] Make build and release jobs depend on the testing workflow.
 - [ ] Refine release and store deployment examples.
   - [ ] Update the GitHub release flow to build from the semver commit it creates.
   - [ ] Add optional Google Play and Steam workflow examples.
