@@ -1,6 +1,6 @@
 .app-shell {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
@@ -66,6 +66,7 @@
 }
 
 .page-content {
+  flex: 1;
   margin: 0 auto;
   max-width: 72rem;
   padding: 3rem 1.5rem;
@@ -177,6 +178,45 @@
   margin-top: 2rem;
   padding: 1.5rem;
   text-align: center;
+}
+
+.electron-title-bar {
+  align-items: center;
+  background: #15203b;
+  color: #ffffff;
+  display: flex;
+  height: 2.25rem;
+  padding-left: 0.875rem;
+  -webkit-app-region: drag;
+}
+
+.electron-title-bar-name {
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.electron-title-bar-controls {
+  align-self: stretch;
+  display: flex;
+  margin-left: auto;
+  -webkit-app-region: no-drag;
+}
+
+.electron-title-bar-controls button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  min-width: 2.75rem;
+  padding: 0;
+}
+
+.electron-title-bar-controls button:hover {
+  background: #334155;
+}
+
+.electron-title-bar-controls .electron-title-bar-close:hover {
+  background: #b91c1c;
 }
 
 .page-loading {

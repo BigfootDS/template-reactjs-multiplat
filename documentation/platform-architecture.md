@@ -24,17 +24,17 @@ The template uses normal browser routing for web and Capacitor builds. It switch
 
 ## Electron IPC
 
-The current preload bridge exposes Electron IPC to the renderer. Treat that as an implementation detail, not a general UI API.
+The preload bridge exposes a small `window.electronApi` object to the renderer. It does not expose Electron's full `ipcRenderer` object.
 
 When a desktop feature is added:
 
-1. Add the IPC channel name to one shared constants module.
-2. Validate the request and perform the work in the Electron main process.
+1. Add the IPC channel name and bridge type to `src/shared/ipc.ts`.
+2. Validate the request and perform the work in `electron/ipc.ts`.
 3. Expose the smallest safe preload function needed by the renderer.
-4. Call that function through a typed renderer wrapper.
-5. Keep normal React screens free of direct `window.ipcRenderer` calls.
+4. Call that function through the typed wrapper in `src/utils/ipc/electronIpc.ts`.
+5. Keep normal React screens free of direct Electron bridge calls.
 
-This is especially useful for window controls, restart behaviour, full-screen state, and native file access. It also makes the browser fallback straightforward.
+The template currently supports minimise, maximise, close, restart, and full-screen state through this boundary. The renderer wrapper returns browser-safe no-op fallbacks when the Electron bridge is unavailable.
 
 ## Electron window defaults
 
@@ -42,7 +42,7 @@ Electron windows should have explicit title, size, minimum dimensions, preload p
 
 Treat external links as external. Open them with the operating system browser rather than allowing the renderer to create arbitrary Electron windows.
 
-Cross-origin isolation headers and a custom title bar are possible template features, but they are opt-in. A custom title bar only belongs in a build that deliberately uses a frameless or hidden-title-bar Electron window.
+The Electron build uses a frameless window and a renderer title bar with minimise, maximise, full-screen, and close controls. Those buttons use the typed IPC wrapper and only render when the Electron bridge is available. Cross-origin isolation headers remain a separate, opt-in feature.
 
 ## Capacitor and native configuration
 

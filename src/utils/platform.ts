@@ -11,7 +11,7 @@ export interface PlatformCapabilities {
 
 export function getPlatformCapabilities(): PlatformCapabilities {
   const hasBrowserRuntime = typeof window !== 'undefined'
-  const isElectron = hasBrowserRuntime && typeof window.ipcRenderer !== 'undefined'
+  const isElectron = hasBrowserRuntime && window.electronApi !== undefined
   const isCapacitor = hasBrowserRuntime && Capacitor.isNativePlatform()
 
   return {

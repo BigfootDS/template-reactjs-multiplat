@@ -1,24 +1,27 @@
-import { ipcRenderer, contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
+import { IpcChannel, type ElectronBridge } from '../src/shared/ipc'
 
-// --------- Expose some API to the Renderer process ---------
-contextBridge.exposeInMainWorld('ipcRenderer', {
-  on(...args: Parameters<typeof ipcRenderer.on>) {
-    const [channel, listener] = args
-    return ipcRenderer.on(channel, (event, ...args) => listener(event, ...args))
+const electronBridge: ElectronBridge = {
+  window: {
+    async close() {
+      await ipcRenderer.invoke(IpcChannel.WindowClose)
+    },
+    async getFullscreen() {
+      return Boolean(await ipcRenderer.invoke(IpcChannel.WindowGetFullscreen))
+    },
+    async minimise() {
+      await ipcRenderer.invoke(IpcChannel.WindowMinimise)
+    },
+    async restart() {
+      await ipcRenderer.invoke(IpcChannel.WindowRestart)
+    },
+    async setFullscreen(enabled) {
+      return Boolean(await ipcRenderer.invoke(IpcChannel.WindowSetFullscreen, enabled))
+    },
+    async toggleMaximise() {
+      return Boolean(await ipcRenderer.invoke(IpcChannel.WindowToggleMaximise))
+    },
   },
-  off(...args: Parameters<typeof ipcRenderer.off>) {
-    const [channel, ...omit] = args
-    return ipcRenderer.off(channel, ...omit)
-  },
-  send(...args: Parameters<typeof ipcRenderer.send>) {
-    const [channel, ...omit] = args
-    return ipcRenderer.send(channel, ...omit)
-  },
-  invoke(...args: Parameters<typeof ipcRenderer.invoke>) {
-    const [channel, ...omit] = args
-    return ipcRenderer.invoke(channel, ...omit)
-  },
+}
 
-  // You can expose other APTs you need here.
-  // ...
-})
+contextBridge.exposeInMainWorld('electronApi', electronBridge)

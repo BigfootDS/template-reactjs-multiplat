@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Link, NavLink, Outlet, Route, Routes } from 'react-router'
+import ElectronTitleBar from './components/ElectronTitleBar'
 import './App.css'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -19,6 +20,7 @@ function AppLayout() {
   return (
     <div className="app-shell">
       <a className="skip-link" href="#main-content">Skip to content</a>
+      <ElectronTitleBar />
       <header className="app-header">
         <Link className="brand" to="/">BigfootDS Template</Link>
         <nav aria-label="Primary navigation">

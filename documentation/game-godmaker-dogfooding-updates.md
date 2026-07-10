@@ -27,11 +27,11 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Create a browser-safe capability-detection module.
   - [x] Use `HashRouter` in packaged Electron builds and browser routing elsewhere.
   - [x] Move platform checks out of React page components.
-- [ ] Formalise Electron IPC behind typed wrappers.
-  - [ ] Define shared IPC channel names.
-  - [ ] Add a main-process IPC initialisation module with input validation.
-  - [ ] Replace direct renderer IPC calls with a typed wrapper and browser fallback.
-  - [ ] Add opt-in window controls for minimise, maximise, close, restart, and full-screen state.
+- [x] Formalise Electron IPC behind typed wrappers.
+  - [x] Define shared IPC channel names.
+  - [x] Add a main-process IPC initialisation module with input validation.
+  - [x] Replace direct renderer IPC calls with a typed wrapper and browser fallback.
+  - [x] Add opt-in window controls for minimise, maximise, close, restart, and full-screen state.
 - [ ] Harden Electron main-process defaults.
   - [ ] Configure explicit window title, dimensions, and minimum dimensions from application metadata.
   - [ ] Disable or customise the default menu only when the application design needs it.
@@ -39,8 +39,8 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [ ] Restrict DevTools to development builds.
   - [ ] Evaluate cross-origin isolation headers for packaged `file://` builds.
 - [ ] Decide whether to provide an optional custom Electron title bar.
-  - [ ] Build a plain React and CSS proof of concept behind an opt-in flag.
-  - [ ] Enable it only when the Electron window uses a matching title-bar configuration.
+  - [x] Build a plain React and CSS proof of concept behind the Electron bridge.
+  - [x] Enable it only when the Electron window uses a matching frameless configuration.
   - [ ] Test keyboard, resize, full-screen, and accessibility behaviour.
 
 ## Testing and automation

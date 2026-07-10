@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron'
+import { initialiseIpc } from './ipc'
 // Line below is commented out per https://github.com/electron-vite/create-electron-vite/issues/56
 // import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
@@ -30,15 +31,18 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
+    frame: false,
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    minHeight: 640,
+    minWidth: 900,
+    title: 'BigfootDS ReactJS Multiplatform Template',
+    height: 800,
+    width: 1200,
     webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
       preload: path.join(__dirname, 'preload.mjs'),
     },
-  })
-
-  // Test active push message to Renderer-process.
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', (new Date).toLocaleString())
   })
 
   if (VITE_DEV_SERVER_URL) {
@@ -67,4 +71,7 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  initialiseIpc(() => win)
+  createWindow()
+})

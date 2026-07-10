@@ -31,9 +31,30 @@ test('renders every browser route and the not-found page', async ({ page }) => {
 
 test('uses hash routes when the Electron preload bridge is available', async ({ page }) => {
   await page.addInitScript(() => {
-    Object.defineProperty(window, 'ipcRenderer', {
+    Object.defineProperty(window, 'electronApi', {
       configurable: true,
-      value: {},
+      value: {
+        window: {
+          close: async () => {
+            document.documentElement.dataset.lastWindowControl = 'close'
+          },
+          getFullscreen: async () => false,
+          minimise: async () => {
+            document.documentElement.dataset.lastWindowControl = 'minimise'
+          },
+          restart: async () => {
+            document.documentElement.dataset.lastWindowControl = 'restart'
+          },
+          setFullscreen: async (enabled: boolean) => {
+            document.documentElement.dataset.lastWindowControl = enabled ? 'enter-fullscreen' : 'exit-fullscreen'
+            return enabled
+          },
+          toggleMaximise: async () => {
+            document.documentElement.dataset.lastWindowControl = 'maximise'
+            return true
+          },
+        },
+      },
     })
   })
 
@@ -41,10 +62,23 @@ test('uses hash routes when the Electron preload bridge is available', async ({ 
 
   await expect(page.getByRole('heading', { name: 'About this template' })).toBeVisible()
 
+  const titleBar = page.getByRole('toolbar', { name: 'Window controls' })
+  await expect(titleBar).toBeVisible()
+  await titleBar.getByRole('button', { name: 'Minimise window' }).click()
+  await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'minimise')
+  await titleBar.getByRole('button', { name: 'Maximise window' }).click()
+  await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'maximise')
+  await expect(titleBar.getByRole('button', { name: 'Restore window' })).toBeVisible()
+  await titleBar.getByRole('button', { name: 'Enter full screen' }).click()
+  await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'enter-fullscreen')
+  await expect(titleBar.getByRole('button', { name: 'Exit full screen' })).toBeVisible()
+
   await page.getByRole('navigation', { name: 'Primary navigation' })
     .getByRole('link', { name: 'Diagnostics' })
     .click()
 
   await expect(page).toHaveURL(/#\/diagnostics$/)
   await expect(page.getByRole('heading', { name: 'Diagnostics' })).toBeVisible()
+  await titleBar.getByRole('button', { name: 'Close window' }).click()
+  await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'close')
 })
