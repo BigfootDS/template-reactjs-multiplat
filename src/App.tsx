@@ -1,34 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/electron-vite.animate.svg'
+import { lazy, Suspense } from 'react'
+import { Link, NavLink, Outlet, Route, Routes } from 'react-router'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const HomePage = lazy(() => import('./pages/HomePage'))
+const SettingsPage = lazy(() => import('./pages/SettingsPage'))
+const DiagnosticsPage = lazy(() => import('./pages/DiagnosticsPage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
+const navigationItems = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/settings', label: 'Settings' },
+  { to: '/diagnostics', label: 'Diagnostics' },
+  { to: '/about', label: 'About' },
+]
+
+function AppLayout() {
   return (
-    <>
-      <div>
-        <a href="https://electron-vite.github.io" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more aaaaaaaaaaaaaaaaa
-      </p>
-    </>
+    <div className="app-shell">
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      <header className="app-header">
+        <Link className="brand" to="/">BigfootDS Template</Link>
+        <nav aria-label="Primary navigation">
+          <ul className="navigation-list">
+            {navigationItems.map(({ to, label, end }) => (
+              <li key={to}>
+                <NavLink
+                  className={({ isActive }) => `navigation-link${isActive ? ' navigation-link-active' : ''}`}
+                  end={end}
+                  to={to}
+                >
+                  {label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </header>
+      <main className="page-content" id="main-content" tabIndex={-1}>
+        <Suspense fallback={<p className="page-loading">Loading page…</p>}>
+          <Outlet />
+        </Suspense>
+      </main>
+      <footer className="app-footer">Browser-first React app shell</footer>
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route element={<AppLayout />} path="/">
+        <Route index element={<HomePage />} />
+        <Route element={<SettingsPage />} path="settings" />
+        <Route element={<DiagnosticsPage />} path="diagnostics" />
+        <Route element={<AboutPage />} path="about" />
+        <Route element={<NotFoundPage />} path="*" />
+      </Route>
+    </Routes>
   )
 }
 

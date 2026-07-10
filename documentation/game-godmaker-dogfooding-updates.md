@@ -18,11 +18,11 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 
 ## App shell and platform boundaries
 
-- [ ] Replace the Vite demo screen with a reusable routed app shell.
-  - [ ] Add Home, Settings, Diagnostics, and About routes.
-  - [ ] Add a root layout that works in browser, Electron, and Capacitor builds.
-  - [ ] Lazy-load example pages to demonstrate code splitting.
-  - [ ] Add an accessible navigation pattern and a basic not-found route.
+- [x] Replace the Vite demo screen with a reusable routed app shell.
+  - [x] Add Home, Settings, Diagnostics, and About routes.
+  - [x] Add a root layout that works in browser, Electron, and Capacitor builds.
+  - [x] Lazy-load example pages to demonstrate code splitting.
+  - [x] Add an accessible navigation pattern and a basic not-found route.
 - [ ] Add platform detection and router selection utilities.
   - [ ] Create a browser-safe capability-detection module.
   - [ ] Use `HashRouter` in packaged Electron builds and browser routing elsewhere.
@@ -46,7 +46,7 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 ## Testing and automation
 
 - [ ] Extend Playwright coverage beyond the starter smoke test.
-  - [ ] Test each app-shell route in the browser.
+  - [x] Test each app-shell route in the browser.
   - [ ] Test Electron-style hash routing.
   - [ ] Add a narrow helper for mocking the renderer IPC wrapper.
   - [ ] Capture useful browser diagnostics on failure.
