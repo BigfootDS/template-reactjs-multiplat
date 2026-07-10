@@ -19,6 +19,10 @@ function toErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : 'Unable to load settings.'
 }
 
+function applyColourTheme(theme: Settings['display']['theme']): void {
+  document.documentElement.dataset.theme = theme
+}
+
 /**
  * Provides the singleton settings entity after loading it from the selected
  * durable backend. Loading settings never enters fullscreen or applies other
@@ -43,6 +47,7 @@ export function SettingsProvider({ children }: PropsWithChildren) {
 
         if (isCurrent) {
           setAdapterId(loadedAdapterId)
+          applyColourTheme(loadedSettings.display.theme)
           settingsReference.current = loadedSettings
           setSettings(loadedSettings)
         }
@@ -72,6 +77,7 @@ export function SettingsProvider({ children }: PropsWithChildren) {
 
       setError(undefined)
       const updatedSettings = await updateSettings(currentSettings, change)
+      applyColourTheme(updatedSettings.display.theme)
       settingsReference.current = updatedSettings
       setAdapterId(await getActiveSettingsPersistenceAdapterId())
       setSettings(updatedSettings)

@@ -84,9 +84,13 @@ test('renders every browser route and the not-found page', async ({ page }) => {
   }, 64)
   await expect(page.getByText('Master volume: 64%')).toBeVisible()
 
+  await page.getByLabel('Colour theme').selectOption('dark')
+  await expect.poll(() => page.locator('html').getAttribute('data-theme')).toBe('dark')
+
   await page.reload()
   await expect(page.getByText('Loading saved preferences…')).toBeHidden()
   await expect(page.getByText('Master volume: 64%')).toBeVisible()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
 })
 
 test('uses hash routes when the Electron preload bridge is available', async ({ page }) => {

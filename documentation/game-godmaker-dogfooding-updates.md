@@ -92,10 +92,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 
 ## UI, localisation, and compliance
 
-- [ ] Decide whether Mantine is a default dependency or an optional recipe.
-  - [ ] Compare the plain-CSS and Mantine template tracks.
-  - [ ] Record the decision and its maintenance cost.
-  - [ ] Add a theme and provider example only if Mantine becomes a default.
+- [x] Decide whether Mantine is a default dependency or an optional recipe.
+  - [x] Compare the plain-CSS and Mantine template tracks.
+  - [x] Record the plain-CSS default decision and Mantine's maintenance cost.
+  - [x] Add a persisted light and dark CSS theme example without adding a Mantine provider.
 - [ ] Create an optional localisation recipe.
   - [ ] Add a minimal `i18next` and `react-i18next` example.
   - [ ] Add a language provider and one English translation file.

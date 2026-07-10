@@ -25,6 +25,19 @@ function SettingsPage() {
         <div className="card-grid">
           <section className="card">
             <h2>Display</h2>
+            <label className="setting-control" htmlFor="colour-theme">
+              <span>Colour theme</span>
+              <select
+                id="colour-theme"
+                onChange={(event) => void update({
+                  display: { theme: event.target.value === 'dark' ? 'dark' : 'light' },
+                })}
+                value={settings.display.theme}
+              >
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
             <label className="setting-control">
               <input
                 checked={settings.display.fullscreen}
@@ -33,7 +46,7 @@ function SettingsPage() {
               />
               <span>Use full-screen mode</span>
             </label>
-            <p>Full screen goes through the Electron IPC wrapper or the browser Fullscreen API.</p>
+            <p>Theme colours use plain CSS variables. Full screen goes through the Electron IPC wrapper or browser Fullscreen API.</p>
           </section>
           <section className="card">
             <h2>Audio</h2>

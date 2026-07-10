@@ -24,7 +24,7 @@ When a test fails, Playwright retains a trace, screenshot, and video in `test-re
 
 Use accessible locators such as headings, buttons, labels, and links. Avoid selectors tied to CSS classes or implementation details unless the screen has no meaningful accessible surface.
 
-Browser-route and Electron-style hash-route coverage belong in the default suite. The suite also verifies the SQLocal-backed settings seed, persistence after a reload, capability diagnostics, and Electron fullscreen through the narrow preload mock. The Electron-style test exposes that mock before the app loads, then verifies hash navigation and the custom title bar's labelled controls, keyboard activation, responsive layout at the desktop minimum size, and full-screen state. When the renderer gains another IPC wrapper, extend that helper to mock the narrow wrapper rather than the entire Electron module.
+Browser-route and Electron-style hash-route coverage belong in the default suite. The suite also verifies the SQLocal-backed settings seed, persisted volume and colour-theme preferences after a reload, capability diagnostics, and Electron fullscreen through the narrow preload mock. The Electron-style test exposes that mock before the app loads, then verifies hash navigation and the custom title bar's labelled controls, keyboard activation, responsive layout at the desktop minimum size, and full-screen state. When the renderer gains another IPC wrapper, extend that helper to mock the narrow wrapper rather than the entire Electron module.
 
 ## CI expectation
 

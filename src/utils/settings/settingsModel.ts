@@ -1,8 +1,11 @@
 export const defaultSettingsId = 'default'
 export const currentSettingsVersion = 1
 
+export type ColourTheme = 'dark' | 'light'
+
 export interface DisplaySettings {
   fullscreen: boolean
+  theme: ColourTheme
 }
 
 export interface AudioSettings {
@@ -48,6 +51,10 @@ function normaliseLanguageCode(value: unknown): string {
   return typeof value === 'string' && value.trim() ? value.trim().toLowerCase() : 'en'
 }
 
+function normaliseTheme(value: unknown): ColourTheme {
+  return value === 'dark' ? 'dark' : 'light'
+}
+
 function normaliseTimestamp(value: unknown, fallback: string): string {
   return typeof value === 'string' && Number.isFinite(Date.parse(value)) ? value : fallback
 }
@@ -70,6 +77,7 @@ export function createDefaultSettings(now = new Date().toISOString()): Settings 
     },
     display: {
       fullscreen: false,
+      theme: 'light',
     },
     id: defaultSettingsId,
     language: {
@@ -106,6 +114,7 @@ export function normaliseSettings(value: unknown, now = new Date().toISOString()
     },
     display: {
       fullscreen: normaliseBoolean(display.fullscreen, defaults.display.fullscreen),
+      theme: normaliseTheme(display.theme),
     },
     id: defaultSettingsId,
     language: {

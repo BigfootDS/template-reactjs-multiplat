@@ -41,7 +41,7 @@ The default template remains deliberately small. Add one of these directions onl
 
 | Direction | When it earns its place |
 | --- | --- |
-| Mantine | The project wants an opinionated React component system, theme provider, and form/modal patterns. |
+| Mantine | The project explicitly wants an opinionated React component system, theme provider, and form/modal patterns, and accepts its upgrade and override costs. Plain CSS remains the template default. |
 | i18next | The product has real multi-language content and a translation workflow. |
 | SQLocal and Kysely | The product needs relational local data, migrations, and queries beyond a small preference store. |
 | Steam runtime and deployment | The desktop product ships through Steam and has a real app ID and release process. |

@@ -1,6 +1,30 @@
 :root {
-  color: #1e293b;
-  background: #f8fafc;
+  --colour-active-surface: #e0e7ff;
+  --colour-border: #d5d9e3;
+  --colour-button-text: #ffffff;
+  --colour-close-hover: #b91c1c;
+  --colour-error-surface: #fee2e2;
+  --colour-error-text: #991b1b;
+  --colour-focus: #f59e0b;
+  --colour-heading: #15203b;
+  --colour-link: #334155;
+  --colour-link-hover-surface: #eef2ff;
+  --colour-link-strong: #1e3a8a;
+  --colour-muted: #475569;
+  --colour-page: #f8fafc;
+  --colour-primary: #1d4ed8;
+  --colour-primary-hover: #1e40af;
+  --colour-status-available-surface: #dcfce7;
+  --colour-status-available-text: #166534;
+  --colour-status-unavailable-surface: #fee2e2;
+  --colour-status-unavailable-text: #991b1b;
+  --colour-surface: #ffffff;
+  --colour-text: #1e293b;
+  --colour-title-bar: #15203b;
+  --colour-title-bar-hover: #334155;
+  background: var(--colour-page);
+  color: var(--colour-text);
+  color-scheme: light;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -8,11 +32,39 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root[data-theme='dark'] {
+  --colour-active-surface: #1e3a8a;
+  --colour-border: #334155;
+  --colour-button-text: #ffffff;
+  --colour-close-hover: #b91c1c;
+  --colour-error-surface: #450a0a;
+  --colour-error-text: #fecaca;
+  --colour-focus: #fbbf24;
+  --colour-heading: #f8fafc;
+  --colour-link: #cbd5e1;
+  --colour-link-hover-surface: #1e293b;
+  --colour-link-strong: #bfdbfe;
+  --colour-muted: #cbd5e1;
+  --colour-page: #0f172a;
+  --colour-primary: #3b82f6;
+  --colour-primary-hover: #60a5fa;
+  --colour-status-available-surface: #14532d;
+  --colour-status-available-text: #dcfce7;
+  --colour-status-unavailable-surface: #450a0a;
+  --colour-status-unavailable-text: #fecaca;
+  --colour-surface: #162033;
+  --colour-text: #e2e8f0;
+  --colour-title-bar: #020617;
+  --colour-title-bar-hover: #1e293b;
+  color-scheme: dark;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
+  background: var(--colour-page);
   margin: 0;
   min-width: 20rem;
 }
@@ -22,8 +74,14 @@ a {
   font: inherit;
 }
 
+button,
+input,
+select {
+  color: inherit;
+}
+
 a:focus-visible,
 button:focus-visible {
-  outline: 3px solid #f59e0b;
+  outline: 3px solid var(--colour-focus);
   outline-offset: 3px;
 }

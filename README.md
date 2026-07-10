@@ -73,6 +73,7 @@ The focused guides are:
 - [Testing](documentation/testing.md)
 - [Persistence strategy](documentation/persistence-strategy.md)
 - [SQLocal and Kysely settings recipe](documentation/sqlocal-kysely-recipe.md)
+- [UI and theming](documentation/ui-and-theming.md)
 - [CI and releases](documentation/ci-and-releases.md)
 - [Metadata, assets, and optional integrations](documentation/metadata-assets-and-optional-integrations.md)
 - [Godmaker dogfooding adoption backlog](documentation/game-godmaker-dogfooding-updates.md)

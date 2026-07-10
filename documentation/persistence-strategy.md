@@ -45,7 +45,7 @@ new persistence adapter has an explicit constraint to work from.
 
 ## Settings storage in this template
 
-The Settings route persists one typed, normalised record with display, audio, language, and diagnostics groups. React uses a provider and repository facade, never a database query directly.
+The Settings route persists one typed, normalised record with display, audio, language, and diagnostics groups. The display group includes the user's colour theme; the provider applies it to the document root without exposing a storage API to the UI. React uses a provider and repository facade, never a database query directly.
 
 The facade selects SQLocal with Kysely when cross-origin isolation, OPFS, and workers are available. It selects IndexedDB for Capacitor and as the fallback when the SQLocal runtime is unavailable. SQLocal start-up failures also fall back to IndexedDB instead of accepting memory-only storage.
 
