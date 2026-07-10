@@ -65,11 +65,11 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 
 ## Application metadata and assets
 
-- [ ] Add safe application metadata injection.
+- [x] Add safe application metadata injection.
   - [x] Define the template metadata shape in `package.json`.
   - [x] Expose the safe name and version fields through Vite.
   - [x] Use the fields for the browser title, Electron window, and diagnostics.
-  - [ ] Use the fields for release names.
+  - [x] Use the fields for release names.
 - [ ] Establish source-asset and generated-asset conventions.
   - [ ] Add placeholder source icons and logos in a documented source location.
   - [ ] Configure Electron and Capacitor tooling to consume the source assets.

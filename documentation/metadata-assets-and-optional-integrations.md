@@ -10,6 +10,12 @@ Electron also reads its window dimensions, menu preference, and packaged cross-o
 
 Do not expose secrets through Vite defines. The renderer bundle is public to the user.
 
+## Release display names
+
+`Release - Build` reads `bigfootds.productName` and the bumped package `version`. The GitHub release keeps the generated tag as its identifier and uses a display name in the form `<productName> v<version>`. For example, a product named `Example App` at version `1.2.3` appears as `Example App v1.2.3`.
+
+The workflow rejects empty or multi-line product-name and version values before it writes the GitHub Actions output. Keep the product name human-readable. File-name-specific values remain separate release configuration because store and installer naming rules are stricter than a GitHub release title.
+
 ## Asset conventions
 
 Keep hand-authored source artwork in a clearly named asset or icon directory. Generate web, Electron, Android, and store-specific output from those sources where tooling supports it.

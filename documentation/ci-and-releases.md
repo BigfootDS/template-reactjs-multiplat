@@ -21,7 +21,7 @@ Keep `.github/workflows/ci_test.yaml` and `.github/workflows/ci_build.yaml` in e
 
 ## Release artefacts
 
-`Release - Build` creates the version bump, records the auto-commit SHA as `latest_commit`, then checks out that exact SHA in every packaging and publishing job. That means the version in `package.json`, the release tag, and every uploaded installer come from the same commit.
+`Release - Build` creates the version bump, reads `bigfootds.productName` and the bumped package `version` for the human-facing GitHub release title, records the auto-commit SHA as `latest_commit`, then checks out that exact SHA in every packaging and publishing job. That means the version in `package.json`, the release tag, and every uploaded installer come from the same commit.
 
 Upload build artefacts once, then reuse those artefacts for release publishing. Rebuilding in deployment jobs makes it harder to know which commit produced what users download.
 
