@@ -3,6 +3,7 @@ import path from 'node:path'
 import electron from 'vite-plugin-electron/simple'
 import react from '@vitejs/plugin-react'
 import packageJson from './package.json'
+import sqlocal from 'sqlocal/vite'
 
 const crossOriginIsolationHeaders = {
   'Cross-Origin-Embedder-Policy': 'require-corp',
@@ -52,6 +53,7 @@ export default defineConfig(({ mode }) => {
           ? undefined
           : {},
       }),
+      sqlocal(),
     ],
   }
 })

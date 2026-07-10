@@ -80,15 +80,15 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 - [x] Add a platform diagnostics screen.
   - [x] Report IndexedDB, OPFS, workers, cross-origin isolation, Electron, and Capacitor capabilities.
   - [x] Explain unavailable capabilities in developer-facing diagnostics output.
-- [ ] Add a lightweight settings persistence pattern.
-  - [ ] Define a small settings shape and defaults.
-  - [ ] Add a persistence facade with a browser-safe initial implementation.
-  - [ ] Add settings examples for display, audio, language, and diagnostics.
-  - [ ] Connect full-screen behaviour through the platform adapter.
-- [ ] Produce an optional SQLocal and Kysely recipe.
-  - [ ] Add a minimal schema, migration registration, and seed example.
-  - [ ] Show database initialisation behind the persistence facade.
-  - [ ] Document how Capacitor builds select a compatible storage implementation.
+- [x] Add a lightweight settings persistence pattern.
+  - [x] Define a small settings shape and defaults.
+  - [x] Add a persistence facade with a browser-safe initial implementation.
+  - [x] Add settings examples for display, audio, language, and diagnostics.
+  - [x] Connect full-screen behaviour through the platform adapter.
+- [x] Produce an optional SQLocal and Kysely recipe.
+  - [x] Add a minimal schema, migration registration, and seed example.
+  - [x] Show database initialisation behind the persistence facade.
+  - [x] Document how Capacitor builds select a compatible storage implementation.
 
 ## UI, localisation, and compliance
 

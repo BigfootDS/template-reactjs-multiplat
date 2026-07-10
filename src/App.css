@@ -249,6 +249,33 @@
   color: #475569;
 }
 
+.setting-control {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.setting-control input[type='range'] {
+  width: 100%;
+}
+
+.setting-control select {
+  border: 1px solid #94a3b8;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.5rem;
+}
+
+.settings-error {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 0.5rem;
+  color: #991b1b;
+  margin: 0;
+  max-width: 48rem;
+  padding: 1rem;
+}
+
 @media (max-width: 42rem) {
   .app-header {
     align-items: flex-start;

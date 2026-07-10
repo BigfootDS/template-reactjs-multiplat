@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { selectSettingsPersistenceAdapter } from '../../src/utils/settings/settingsPersistenceEnvironment'
 import { mockElectronBridge } from './helpers/electronBridge'
 
 test('renders the routed app shell and primary navigation', async ({ page }) => {
@@ -39,6 +40,10 @@ test('renders every browser route and the not-found page', async ({ page }) => {
 
   const crossOriginIsolationDiagnostic = page.getByText('Cross-origin isolation', { exact: true }).locator('..')
   await expect(crossOriginIsolationDiagnostic).toContainText('Available')
+  const settingsBackendDiagnostic = page.getByText('Settings persistence backend', { exact: true })
+    .locator('..')
+    .locator('..')
+  await expect(settingsBackendDiagnostic).toContainText('SQLocal with Kysely is selected')
 
   for (const capability of [
     'IndexedDB',
@@ -59,6 +64,29 @@ test('renders every browser route and the not-found page', async ({ page }) => {
     'Capacitor does not report a native platform. Do not call native plugins from this runtime.',
     { exact: true },
   )).toBeVisible()
+
+  await page.getByRole('link', { name: 'Settings' }).click()
+  await expect(page.getByText('Loading saved preferences…')).toBeHidden()
+  await expect(page.getByRole('checkbox', { name: 'Mute all audio' })).toBeVisible()
+
+  const volume = page.getByRole('slider', { name: /Master volume/ })
+  await volume.evaluate((element, value) => {
+    const input = element as HTMLInputElement
+    const valueSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
+
+    if (!valueSetter) {
+      throw new Error('Unable to set the range input value.')
+    }
+
+    valueSetter.call(input, String(value))
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    input.dispatchEvent(new Event('change', { bubbles: true }))
+  }, 64)
+  await expect(page.getByText('Master volume: 64%')).toBeVisible()
+
+  await page.reload()
+  await expect(page.getByText('Loading saved preferences…')).toBeHidden()
+  await expect(page.getByText('Master volume: 64%')).toBeVisible()
 })
 
 test('uses hash routes when the Electron preload bridge is available', async ({ page }) => {
@@ -121,6 +149,24 @@ test('uses hash routes when the Electron preload bridge is available', async ({ 
   await expect(page.getByRole('heading', { name: 'Diagnostics', exact: true })).toBeVisible()
   const electronBridgeDiagnostic = page.getByText('Electron bridge', { exact: true }).locator('..')
   await expect(electronBridgeDiagnostic).toContainText('Available')
+  await page.getByRole('navigation', { name: 'Primary navigation' })
+    .getByRole('link', { name: 'Settings' })
+    .click()
+  await expect(page).toHaveURL(/#\/settings$/)
+  await expect(page.getByText('Loading saved preferences…')).toBeHidden()
+  await page.getByRole('checkbox', { name: 'Use full-screen mode' }).click()
+  await expect.poll(() => page.locator('html').getAttribute('data-last-window-control'))
+    .toBe('enter-fullscreen')
   await closeButton.click()
   await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'close')
+})
+
+test('selects IndexedDB settings for a Capacitor runtime without isolated OPFS', () => {
+  expect(selectSettingsPersistenceAdapter({
+    hasIndexedDb: true,
+    hasOpfs: false,
+    hasWorker: true,
+    isCapacitor: true,
+    isCrossOriginIsolated: false,
+  })).toBe('indexeddb')
 })

@@ -1,4 +1,5 @@
 import { getPlatformCapabilities } from './platform'
+import { getSettingsPersistenceEnvironment } from './settings/settingsPersistenceEnvironment'
 
 export type CapabilityStatus = 'available' | 'unavailable'
 
@@ -16,6 +17,7 @@ export interface CapabilityDiagnostic {
  */
 export function getPlatformCapabilityDiagnostics(): CapabilityDiagnostic[] {
   const { isCapacitor, isElectron } = getPlatformCapabilities()
+  const settingsPersistence = getSettingsPersistenceEnvironment()
   const hasIndexedDb = typeof indexedDB !== 'undefined'
   const hasOpfs = typeof navigator !== 'undefined'
     && typeof navigator.storage?.getDirectory === 'function'
@@ -64,6 +66,15 @@ export function getPlatformCapabilityDiagnostics(): CapabilityDiagnostic[] {
       detail: isCapacitor
         ? 'Capacitor reports a native platform. Keep native plugin calls behind a capability adapter.'
         : 'Capacitor does not report a native platform. Do not call native plugins from this runtime.',
+    },
+    {
+      name: 'Settings persistence backend',
+      status: settingsPersistence.preferredAdapterId === 'unavailable' ? 'unavailable' : 'available',
+      detail: settingsPersistence.preferredAdapterId === 'sqlocal'
+        ? 'SQLocal with Kysely is selected because this runtime provides cross-origin isolation, OPFS, and workers.'
+        : settingsPersistence.preferredAdapterId === 'indexeddb'
+          ? 'IndexedDB is selected as the durable browser-safe backend for this runtime.'
+          : 'No durable settings backend is available. Enable IndexedDB or provide a platform storage adapter.',
     },
   ]
 }

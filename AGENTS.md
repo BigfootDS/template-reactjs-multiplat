@@ -27,7 +27,8 @@ This repository is a browser-first React template that can also ship through Ele
 ## Data, assets, and secrets
 
 - Put persistence behind an application-facing adapter. React components should not choose between `localStorage`, IndexedDB, OPFS, or a native store themselves.
-- Treat SQLocal, Kysely, Mantine, localisation, Steam, store deployment, and similar stacks as opt-in directions. They are not default dependencies.
+- Settings use one versioned entity behind a capability-selected repository: SQLocal and Kysely on isolated OPFS-capable web and Electron builds, IndexedDB on Capacitor-style or fallback runtimes. Keep SQLocal, Kysely, and IndexedDB calls out of React components.
+- Treat Mantine, localisation, Steam, store deployment, and similar stacks as opt-in directions. They are not default dependencies.
 - Keep a source icon and logo outside generated platform output. Do not hand-edit generated Capacitor, Electron, or store assets.
 - Never commit signing keys, passwords, API keys, app IDs for a real product, or other credentials. Read values from local environment configuration or CI secrets.
 
