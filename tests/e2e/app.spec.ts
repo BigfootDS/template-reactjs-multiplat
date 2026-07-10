@@ -26,11 +26,32 @@ test('renders every browser route and the not-found page', async ({ page }) => {
 
   for (const { path, heading } of routes) {
     await page.goto(path)
-    await expect(page.getByRole('heading', { name: heading })).toBeVisible()
+    await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible()
   }
 
   await page.goto('/diagnostics')
   await expect(page.getByText('BigfootDS ReactJS Multiplatform Template', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Runtime capabilities' })).toBeVisible()
+
+  for (const capability of [
+    'IndexedDB',
+    'Origin Private File System (OPFS)',
+    'Web Workers',
+    'Cross-origin isolation',
+    'Electron bridge',
+    'Capacitor native bridge',
+  ]) {
+    await expect(page.getByText(capability, { exact: true })).toBeVisible()
+  }
+
+  await expect(page.getByText(
+    'No Electron preload bridge is present. Desktop window controls use browser-safe fallbacks.',
+    { exact: true },
+  )).toBeVisible()
+  await expect(page.getByText(
+    'Capacitor does not report a native platform. Do not call native plugins from this runtime.',
+    { exact: true },
+  )).toBeVisible()
 })
 
 test('uses hash routes when the Electron preload bridge is available', async ({ page }) => {
@@ -79,7 +100,9 @@ test('uses hash routes when the Electron preload bridge is available', async ({ 
     .click()
 
   await expect(page).toHaveURL(/#\/diagnostics$/)
-  await expect(page.getByRole('heading', { name: 'Diagnostics' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Diagnostics', exact: true })).toBeVisible()
+  const electronBridgeDiagnostic = page.getByText('Electron bridge', { exact: true }).locator('..')
+  await expect(electronBridgeDiagnostic).toContainText('Available')
   await closeButton.click()
   await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'close')
 })

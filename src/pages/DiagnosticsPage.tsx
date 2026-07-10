@@ -1,6 +1,7 @@
 import { appMetadata } from '../utils/appMetadata'
+import { getPlatformCapabilityDiagnostics } from '../utils/platformDiagnostics'
 
-const diagnosticAreas = [
+const appDiagnostics = [
   {
     name: 'Product metadata',
     value: appMetadata.productName,
@@ -11,34 +12,44 @@ const diagnosticAreas = [
     value: 'Ready',
     detail: 'The same routed React layout is shared by web, Electron, and Capacitor builds.',
   },
-  {
-    name: 'Platform detection',
-    value: 'Not configured',
-    detail: 'Capability checks and Electron hash-route selection are the next platform task.',
-  },
-  {
-    name: 'Persistence',
-    value: 'Not configured',
-    detail: 'A future adapter will select a supported local storage implementation.',
-  },
 ]
 
 function DiagnosticsPage() {
+  const capabilityDiagnostics = getPlatformCapabilityDiagnostics()
+
   return (
     <div className="page">
       <div className="page-heading">
         <h1>Diagnostics</h1>
         <p>
-          Use this route for developer-facing capability checks. It starts honestly:
-          the app shell is ready, while platform and storage diagnostics remain opt-in work.
+          Check the capabilities that affect persistence and platform adapters before
+          initialising them. This route only performs feature detection: it does not
+          open a database, request storage, or invoke native code.
         </p>
       </div>
-      <section className="page-section" aria-label="Diagnostic status">
+      <section className="page-section" aria-labelledby="application-diagnostics-heading">
+        <h2 id="application-diagnostics-heading">Application diagnostics</h2>
         <dl className="diagnostic-list">
-          {diagnosticAreas.map(({ name, value, detail }) => (
+          {appDiagnostics.map(({ name, value, detail }) => (
             <div key={name}>
               <dt>{name}</dt>
               <dd><strong>{value}</strong>: {detail}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      <section className="page-section" aria-labelledby="runtime-capabilities-heading">
+        <h2 id="runtime-capabilities-heading">Runtime capabilities</h2>
+        <dl className="diagnostic-list">
+          {capabilityDiagnostics.map(({ detail, name, status }) => (
+            <div key={name}>
+              <dt>
+                <span>{name}</span>
+                <span className={`diagnostic-status diagnostic-status-${status}`}>
+                  {status === 'available' ? 'Available' : 'Unavailable'}
+                </span>
+              </dt>
+              <dd>{detail}</dd>
             </div>
           ))}
         </dl>

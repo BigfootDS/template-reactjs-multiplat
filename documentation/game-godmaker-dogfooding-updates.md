@@ -77,9 +77,9 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 
 ## Persistence and settings
 
-- [ ] Add a platform diagnostics screen.
-  - [ ] Report IndexedDB, OPFS, workers, cross-origin isolation, Electron, and Capacitor capabilities.
-  - [ ] Explain unavailable capabilities in developer-facing diagnostics output.
+- [x] Add a platform diagnostics screen.
+  - [x] Report IndexedDB, OPFS, workers, cross-origin isolation, Electron, and Capacitor capabilities.
+  - [x] Explain unavailable capabilities in developer-facing diagnostics output.
 - [ ] Add a lightweight settings persistence pattern.
   - [ ] Define a small settings shape and defaults.
   - [ ] Add a persistence facade with a browser-safe initial implementation.

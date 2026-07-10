@@ -25,7 +25,8 @@ This protects the UI from a later change, such as moving settings from `localSto
 
 ## Check capabilities
 
-Diagnostics should report the features that matter to data storage:
+Open the `/diagnostics` route before choosing a storage implementation. It reports the
+features that matter to data storage:
 
 - IndexedDB availability
 - OPFS availability
@@ -35,6 +36,11 @@ Diagnostics should report the features that matter to data storage:
 - Capacitor bridge availability
 
 That information is more useful than a list of operating-system names. It tells us which storage path is actually safe to initialise.
+
+The route only detects capabilities. It does not create a database, ask for storage
+permission, or initialise a native plugin. Every unavailable capability includes a
+developer-facing explanation of the safe fallback or the missing configuration, so a
+new persistence adapter has an explicit constraint to work from.
 
 ## SQLocal and Kysely are a deliberate track
 
