@@ -1,150 +1,79 @@
-# BigfootDS Ionic Capacitor Multiplat Template
+# BigfootDS ReactJS Multiplatform Template
 
-A template for a ReactJS front-end app built with TypeScript and Vite.
+This is a browser-first React template for products that also need desktop and mobile builds. Vite builds the web app, Electron packages it for desktop, and Capacitor syncs the same web output into native mobile projects.
 
-This template uses Ionic Capacitor and ElectronJS to get to other platforms;
-
-- Web (Ionic Capacitor)
-- iOS (Ionic Capacitor, Xcode)
-- Android (Ionic Capacitor, Android Studio)
-- Windows (ElectronJS)
-- Ubuntu (ElectronJS)
-- MacOS (ElectronJS)
+The important bit is that `src/` remains a normal web application. Desktop and mobile code sit at the edges, not inside every component.
 
 ```mermaid
 flowchart TD
-    A[React app] -->|Compile to `dist` folder| C{Static website}
-    C -->|Capacitor + React| D[Android app]
-    C -->|Capacitor + React| E[iOS App]
-    C -->|Electron + React| F[Windows App]
-    C -->|Electron + React| G[MacOS App]
-    C -->|Electron + React| H[Linux App]
+    A[React app in src/] --> B[Vite build]
+    B --> C[dist/ static web app]
+    C --> D[Browser]
+    C --> E[Capacitor Android and iOS]
+    C --> F[Electron Windows, macOS, and Linux]
 ```
 
-## TODO
+## Quick start
 
-This isn't fully-ready for use as a template yet, but it's public so you can learn from what I've been building so far and make your own progress for your own projects.
-
-Major things to do: 
-
-- Confirm build configuration and outputs for some key platforms:
-  - [ ] iOS (whatever file format is meant for them)
-  - [ ] MacOS (dmg)
-  - [x] Linux (deb)
-- Use this in a separate project for dogfooding to confirm how some more-complex React packages will work
-  - [ ] React Router 
-  - [ ] Any localstorage and indexDB solutions to avoid mobile localstorage cache auto-deleting problems
-  - [ ] How/if the Capacitor plugins would work in Electron builds, and if we need to do code splitting or just limit plugin usage
-- More CI/CD
-  - [x] Automatic GitHub repository releases with file attachments
-  - [ ] Automatic publishing of releases through to app stores
-
-## General Workflow Steps
-
-For people working in this repo after it's already been created:
-
-1. Do your ReactJS work.
-  - Avoid Capacitor- or Electron-specific solutions or implementations of features. Keep the ReactJS codebase agnostic to either framework!
-3. Preview your ReactJS app in a web browser: `npm run dev`
-3. Sync the ReactJS app into the Capacitor Android project, and run the Android project: `npm run android:run`
-4. Use platform-specific build commands when ready to make an installable file, such as `npm run android:build` or `npm run electron:build:windows:portable`
-
-
-
-
-## First-Time Project Creation Setup Steps
-
-For when you make a brand-new project (NOT just cloning this repo, but making a new repo!):
-
-1. Create the React + Vite app and choose the "Other\Electron" template: `npm create vite@latest .`
-2. Install its dependencies if you didn't from the previous step: `npm install`
-3. Check the Electron-Builder version - if it still has an issue running `npm run build` on Windows, the workaround is here: https://github.com/electron-userland/electron-builder/issues/8149#issuecomment-3967495687 
-3. Add Capacitor to the project: `npm install @capacitor/core`
-4. Add the Capacitor CLI to the project: `npm install --save-dev @capacitor/cli`
-5. Initialise Capacitor: `npx cap init`
-6. Build the ReactJS app: `npm run build`
-7. Add Android to the Capacitor project: `npm install @capacitor/android`
-7. Initialise the Android project: `npx cap add android`
-8. Initialise an app logo/asset generator per the documentation here: https://capacitorjs.com/docs/guides/splash-screens-and-icons 
-9. Add the `capacitor-env` package to the project by running `npm install @capgo/capacitor-env && npx cap sync` - no `dotenv`, no `node:process`, just that package.
-10. NOTE: This step will be modified to use ENV variables in future. Don't worry about this step here, it only impacts the local dev debugging of Android builds. Modify the `capacitor.config.ts` file so that it refers to the Android keystore for App installer signing:
-```typescript
-import type { CapacitorConfig } from '@capacitor/cli';
-
-const config: CapacitorConfig = {
-  appId: 'com.bigfootds.fidgettoys',
-  appName: "Bigfoot's Fidget Toys",
-  webDir: 'dist',
-  android: {
-    buildOptions: {
-      releaseType: "AAB",
-      keystorePath: "./release-keystore",
-      keystorePassword: "SomeBetterPasswordOrEnvValueHere1",
-      keystoreAlias: "SomeBetterAliasOrEnvValueHere",
-      keystoreAliasPassword: "SomeBetterPasswordOrEnvValueHere2"
-    }
-  }
-};
-
-export default config;
-```
-11. Ensure Android Studio is installed on your development PC and ensure that it has a version of an Android SDK installed within it.
-12. Run `npx cap open android` to open the project in Android Studio.
-13. Keep an eye out for any prompts to upgrade the project from within Android Studio. Do them.
-14. Using Android Studio, make a key store per the relevant bit of this guide, and save the key store file to the `android` folder in this repo: https://ionic.io/blog/building-and-releasing-your-capacitor-android-app 
-15. If you make any changes to the ReactJS app at this point, you must tell the Android app to sync those changes into it: `npx cap sync`
-16. With an Android phone with developer mode & USB Debugging enabled and plugged into the computer, run `npx cap run android` to build and run the app to your phone.
-17. If the Android build fails with an error mentioning `getDefaultProguardFile('proguard-android.txt')`, find the `build.gradle` file in the project's `android/app/` directory. You need to modify the `buildTypes` object to make that `getDefaultProguardFile` function use a different file instead:
-
-```gradle
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+```powershell
+npm install
+npm run react:dev
 ```
 
-18. Add this library to get more handy ReactJS hooks: `npm install react-use && npx cap sync`
+Then open the local URL printed by Vite. Before handing work over, run:
 
-
-## GitHub Actions Setup Steps
-
-TODO: Stuff about the repo secrets for Google Play signing keys & keystore-as-env stuff, and anything similar for other platforms.
-
-
-
-# Electron-Vite Template Readme
-
-Below is the original Electron-Vite template's readme contents, in case we still need that for anything.
-
-## React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-### Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```powershell
+npm run react:lint
+npm run react:test:e2e
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+The end-to-end command builds the app, starts a production preview on `127.0.0.1:4173`, and runs the Chromium smoke test.
+
+## Common commands
+
+| What you need to do | Command |
+| --- | --- |
+| Start the browser development server | `npm run react:dev` |
+| Build the web app and Electron main/preload bundles | `npm run react:build` |
+| Preview the production web build | `npm run react:preview` |
+| Run type-aware linting | `npm run react:lint` |
+| Run the Playwright browser suite | `npm run react:test:e2e` |
+| Open the Playwright test UI | `npm run react:test:e2e:ui` |
+| Synchronise and build Android | `npm run capacitor:android:build` |
+| Build a Windows portable Electron package | `npm run electron:build:windows:portable` |
+
+## Project layout
+
+| Path | Purpose |
+| --- | --- |
+| `src/` | Browser-safe React application code. |
+| `electron/` | Electron main-process and preload code. |
+| `android/` | Capacitor-generated Android project. |
+| `public/` | Static web assets. |
+| `tests/e2e/` | Playwright end-to-end tests. |
+| `documentation/` | Architecture, workflow, and adoption notes. |
+| `capacitor.config.ts` | Capacitor application configuration. |
+| `electron-builder.json5` | Desktop packaging configuration. |
+
+## Creating a project from this template
+
+Before publishing a real product, replace the template identity in `package.json`, `capacitor.config.ts`, and `electron-builder.json5`. Give the app a real name, package ID, icons, and release output names.
+
+Set up signing outside the repository. Local builds can read from your own environment, while CI should read from repository secrets. The checked-in configuration must never contain a real keystore, password, or production API key.
+
+If you need platform behaviour, read [Platform architecture](documentation/platform-architecture.md) first. It explains where browser, Electron, and Capacitor code belongs.
+
+## Contributor guidance and documentation
+
+[`AGENTS.md`](AGENTS.md) is the working agreement for AI agents and human contributors. It covers architecture boundaries, generated output, verification, and documentation expectations.
+
+The focused guides are:
+
+- [Platform architecture](documentation/platform-architecture.md)
+- [Testing](documentation/testing.md)
+- [Persistence strategy](documentation/persistence-strategy.md)
+- [CI and releases](documentation/ci-and-releases.md)
+- [Metadata, assets, and optional integrations](documentation/metadata-assets-and-optional-integrations.md)
+- [Godmaker dogfooding adoption backlog](documentation/game-godmaker-dogfooding-updates.md)
+
+The backlog is deliberately separate from the guidance. It records unfinished template work as concrete checkbox tasks, rather than treating every useful idea as a mandatory dependency.
