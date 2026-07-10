@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { mockElectronBridge } from './helpers/electronBridge'
 
 test('renders the routed app shell and primary navigation', async ({ page }) => {
   await page.goto('/')
@@ -33,33 +34,7 @@ test('renders every browser route and the not-found page', async ({ page }) => {
 })
 
 test('uses hash routes when the Electron preload bridge is available', async ({ page }) => {
-  await page.addInitScript(() => {
-    Object.defineProperty(window, 'electronApi', {
-      configurable: true,
-      value: {
-        window: {
-          close: async () => {
-            document.documentElement.dataset.lastWindowControl = 'close'
-          },
-          getFullscreen: async () => false,
-          minimise: async () => {
-            document.documentElement.dataset.lastWindowControl = 'minimise'
-          },
-          restart: async () => {
-            document.documentElement.dataset.lastWindowControl = 'restart'
-          },
-          setFullscreen: async (enabled: boolean) => {
-            document.documentElement.dataset.lastWindowControl = enabled ? 'enter-fullscreen' : 'exit-fullscreen'
-            return enabled
-          },
-          toggleMaximise: async () => {
-            document.documentElement.dataset.lastWindowControl = 'maximise'
-            return true
-          },
-        },
-      },
-    })
-  })
+  await mockElectronBridge(page)
 
   await page.goto('/#/about')
 

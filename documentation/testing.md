@@ -18,13 +18,13 @@ For interactive debugging, use:
 npm run react:test:e2e:ui
 ```
 
-Playwright traces are retained on the first retry. The HTML report command is `npm run react:test:e2e:report`.
+When a test fails, Playwright retains a trace, screenshot, and video in `test-results/`. The HTML report, including links to those artifacts, is written to `playwright-report/` and can be opened with `npm run react:test:e2e:report`. Both output directories are ignored by Git.
 
 ## Test the behaviour a user can see
 
 Use accessible locators such as headings, buttons, labels, and links. Avoid selectors tied to CSS classes or implementation details unless the screen has no meaningful accessible surface.
 
-Browser-route and Electron-style hash-route coverage belong in the default suite. The Electron-style test exposes the narrow preload bridge before the app loads, then verifies hash navigation and the custom title bar's labelled controls, keyboard activation, responsive layout at the desktop minimum size, and full-screen state. When the renderer gains another IPC wrapper, test the browser fallback and mock the narrow wrapper, not the entire Electron module.
+Browser-route and Electron-style hash-route coverage belong in the default suite. The Electron-style test exposes a narrow mock of the preload bridge before the app loads, then verifies hash navigation and the custom title bar's labelled controls, keyboard activation, responsive layout at the desktop minimum size, and full-screen state. When the renderer gains another IPC wrapper, extend that helper to mock the narrow wrapper rather than the entire Electron module.
 
 ## CI expectation
 

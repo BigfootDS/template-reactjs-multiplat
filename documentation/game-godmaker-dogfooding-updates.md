@@ -45,11 +45,11 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 
 ## Testing and automation
 
-- [ ] Extend Playwright coverage beyond the starter smoke test.
+- [x] Extend Playwright coverage beyond the starter smoke test.
   - [x] Test each app-shell route in the browser.
   - [x] Test Electron-style hash routing.
-  - [ ] Add a narrow helper for mocking the renderer IPC wrapper.
-  - [ ] Capture useful browser diagnostics on failure.
+  - [x] Add a narrow helper for mocking the renderer IPC wrapper.
+  - [x] Capture useful browser diagnostics on failure.
 - [ ] Split testing CI from release packaging.
   - [ ] Add a CI testing workflow that runs `npm ci`, linting, and Playwright.
   - [ ] Upload Playwright reports when a testing job fails or is not cancelled.
