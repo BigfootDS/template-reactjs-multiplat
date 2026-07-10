@@ -29,9 +29,16 @@ test('renders every browser route and the not-found page', async ({ page }) => {
     await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible()
   }
 
-  await page.goto('/diagnostics')
+  const diagnosticsResponse = await page.goto('/diagnostics')
+  expect(diagnosticsResponse?.headers()).toMatchObject({
+    'cross-origin-embedder-policy': 'require-corp',
+    'cross-origin-opener-policy': 'same-origin',
+  })
   await expect(page.getByText('BigfootDS ReactJS Multiplatform Template', { exact: true })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Runtime capabilities' })).toBeVisible()
+
+  const crossOriginIsolationDiagnostic = page.getByText('Cross-origin isolation', { exact: true }).locator('..')
+  await expect(crossOriginIsolationDiagnostic).toContainText('Available')
 
   for (const capability of [
     'IndexedDB',
@@ -69,6 +76,8 @@ test('uses hash routes when the Electron preload bridge is available', async ({ 
 
   await expect(titleBar).toBeVisible()
   await expect(titleBar).toHaveAccessibleName('Window controls')
+  await expect(titleBar).toHaveCSS('position', 'sticky')
+  await expect(titleBar).toHaveCSS('top', '0px')
   await expect(minimiseButton).toHaveAccessibleName('Minimise window')
   await expect(maximiseButton).toHaveAccessibleName('Maximise window')
   await expect(fullscreenButton).toHaveAccessibleName('Enter full screen')
@@ -79,6 +88,15 @@ test('uses hash routes when the Electron preload bridge is available', async ({ 
   const closeButtonBounds = await closeButton.boundingBox()
   expect(closeButtonBounds).not.toBeNull()
   expect((closeButtonBounds?.x ?? 0) + (closeButtonBounds?.width ?? 0)).toBeLessThanOrEqual(900)
+
+  await page.locator('.page-content').evaluate((element) => {
+    element.setAttribute('style', 'min-height: 200vh')
+  })
+  await page.evaluate(() => window.scrollTo(0, 200))
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+  const titleBarBounds = await titleBar.boundingBox()
+  expect(titleBarBounds).not.toBeNull()
+  expect(titleBarBounds?.y).toBe(0)
 
   await minimiseButton.focus()
   await expect(minimiseButton).toBeFocused()

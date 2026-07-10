@@ -46,7 +46,9 @@ Treat external links as external. The main process denies renderer-created windo
 
 The Electron build uses a frameless window and a renderer title bar with minimise, maximise, full-screen, and close controls. Those buttons use the typed IPC wrapper and only render when the Electron bridge is available. Toggle controls expose their pressed state to assistive technology, while native buttons retain standard keyboard activation.
 
-Packaged file builds set `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` when `bigfootds.electron.crossOriginIsolation` is enabled. This enables cross-origin isolation for APIs that require it, but any remote subresource must have compatible CORS or CORP headers. Disable the setting for a product that cannot meet that constraint, then document the trade-off.
+The Vite development and preview servers set `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp`. Electron also injects those headers into its session in both development and packaged runs, rather than trusting the development server to supply them. This makes cross-origin isolation failures visible while a project still has time to replace or correctly configure an incompatible remote resource. The Playwright preview suite verifies both headers and the diagnostics result.
+
+The Electron headers are enabled when `bigfootds.electron.crossOriginIsolation` is enabled. Any remote subresource must have compatible CORS or CORP headers. A deployed web build needs the same response headers from its host or reverse proxy because static Vite output cannot set HTTP headers. Disable the setting only when a product cannot meet that constraint, then document the trade-off.
 
 ## Capacitor and native configuration
 

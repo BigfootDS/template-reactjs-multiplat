@@ -77,7 +77,7 @@ function configureNavigation(currentWindow: BrowserWindow): void {
 }
 
 function configureCrossOriginIsolation(): void {
-  if (VITE_DEV_SERVER_URL || !appMetadata.electron.crossOriginIsolation) {
+  if (!appMetadata.electron.crossOriginIsolation) {
     return
   }
 

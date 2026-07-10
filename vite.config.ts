@@ -4,6 +4,11 @@ import electron from 'vite-plugin-electron/simple'
 import react from '@vitejs/plugin-react'
 import packageJson from './package.json'
 
+const crossOriginIsolationHeaders = {
+  'Cross-Origin-Embedder-Policy': 'require-corp',
+  'Cross-Origin-Opener-Policy': 'same-origin',
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const publicEnvironment = loadEnv(mode, process.cwd(), 'VITE_')
@@ -20,6 +25,12 @@ export default defineConfig(({ mode }) => {
     define: {
       __APP_METADATA__: JSON.stringify(appMetadata),
       'process.env': JSON.stringify({ ...publicEnvironment, ...appMetadata }),
+    },
+    preview: {
+      headers: crossOriginIsolationHeaders,
+    },
+    server: {
+      headers: crossOriginIsolationHeaders,
     },
     plugins: [
       react(),
