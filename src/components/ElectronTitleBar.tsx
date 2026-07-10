@@ -36,6 +36,7 @@ function ElectronTitleBar() {
         </button>
         <button
           aria-label={isMaximised ? 'Restore window' : 'Maximise window'}
+          aria-pressed={isMaximised}
           onClick={() => void toggleMaximise()}
           type="button"
         >
@@ -43,6 +44,7 @@ function ElectronTitleBar() {
         </button>
         <button
           aria-label={isFullscreen ? 'Exit full screen' : 'Enter full screen'}
+          aria-pressed={isFullscreen}
           onClick={() => void toggleFullscreen()}
           type="button"
         >

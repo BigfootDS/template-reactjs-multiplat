@@ -66,15 +66,38 @@ test('uses hash routes when the Electron preload bridge is available', async ({ 
   await expect(page.getByRole('heading', { name: 'About this template' })).toBeVisible()
 
   const titleBar = page.getByRole('toolbar', { name: 'Window controls' })
+  const minimiseButton = titleBar.getByRole('button', { name: 'Minimise window' })
+  const maximiseButton = titleBar.getByRole('button', { name: 'Maximise window' })
+  const fullscreenButton = titleBar.getByRole('button', { name: 'Enter full screen' })
+  const closeButton = titleBar.getByRole('button', { name: 'Close window' })
+
   await expect(titleBar).toBeVisible()
-  await titleBar.getByRole('button', { name: 'Minimise window' }).click()
+  await expect(titleBar).toHaveAccessibleName('Window controls')
+  await expect(minimiseButton).toHaveAccessibleName('Minimise window')
+  await expect(maximiseButton).toHaveAccessibleName('Maximise window')
+  await expect(fullscreenButton).toHaveAccessibleName('Enter full screen')
+  await expect(closeButton).toHaveAccessibleName('Close window')
+
+  await page.setViewportSize({ width: 900, height: 640 })
+  await expect(closeButton).toBeVisible()
+  const closeButtonBounds = await closeButton.boundingBox()
+  expect(closeButtonBounds).not.toBeNull()
+  expect((closeButtonBounds?.x ?? 0) + (closeButtonBounds?.width ?? 0)).toBeLessThanOrEqual(900)
+
+  await minimiseButton.focus()
+  await expect(minimiseButton).toBeFocused()
+  await page.keyboard.press('Enter')
   await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'minimise')
-  await titleBar.getByRole('button', { name: 'Maximise window' }).click()
+
+  await maximiseButton.click()
   await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'maximise')
-  await expect(titleBar.getByRole('button', { name: 'Restore window' })).toBeVisible()
-  await titleBar.getByRole('button', { name: 'Enter full screen' }).click()
+  await expect(titleBar.getByRole('button', { name: 'Restore window' })).toHaveAttribute('aria-pressed', 'true')
+
+  await fullscreenButton.focus()
+  await expect(fullscreenButton).toBeFocused()
+  await page.keyboard.press('Enter')
   await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'enter-fullscreen')
-  await expect(titleBar.getByRole('button', { name: 'Exit full screen' })).toBeVisible()
+  await expect(titleBar.getByRole('button', { name: 'Exit full screen' })).toHaveAttribute('aria-pressed', 'true')
 
   await page.getByRole('navigation', { name: 'Primary navigation' })
     .getByRole('link', { name: 'Diagnostics' })
@@ -82,6 +105,6 @@ test('uses hash routes when the Electron preload bridge is available', async ({ 
 
   await expect(page).toHaveURL(/#\/diagnostics$/)
   await expect(page.getByRole('heading', { name: 'Diagnostics' })).toBeVisible()
-  await titleBar.getByRole('button', { name: 'Close window' }).click()
+  await closeButton.click()
   await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'close')
 })

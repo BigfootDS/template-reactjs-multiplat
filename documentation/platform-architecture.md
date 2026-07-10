@@ -44,7 +44,7 @@ The frameless template disables the default application menu because the rendere
 
 Treat external links as external. The main process denies renderer-created windows and opens only `https:` and `mailto:` links through the operating system browser. Do not pass arbitrary user-controlled URLs to `shell.openExternal`.
 
-The Electron build uses a frameless window and a renderer title bar with minimise, maximise, full-screen, and close controls. Those buttons use the typed IPC wrapper and only render when the Electron bridge is available.
+The Electron build uses a frameless window and a renderer title bar with minimise, maximise, full-screen, and close controls. Those buttons use the typed IPC wrapper and only render when the Electron bridge is available. Toggle controls expose their pressed state to assistive technology, while native buttons retain standard keyboard activation.
 
 Packaged file builds set `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` when `bigfootds.electron.crossOriginIsolation` is enabled. This enables cross-origin isolation for APIs that require it, but any remote subresource must have compatible CORS or CORP headers. Disable the setting for a product that cannot meet that constraint, then document the trade-off.
 

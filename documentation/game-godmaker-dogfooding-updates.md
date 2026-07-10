@@ -38,10 +38,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Open external links in the operating-system browser.
   - [x] Restrict DevTools to development builds.
   - [x] Evaluate cross-origin isolation headers for packaged `file://` builds.
-- [ ] Decide whether to provide an optional custom Electron title bar.
+- [x] Decide whether to provide an optional custom Electron title bar.
   - [x] Build a plain React and CSS proof of concept behind the Electron bridge.
   - [x] Enable it only when the Electron window uses a matching frameless configuration.
-  - [ ] Test keyboard, resize, full-screen, and accessibility behaviour.
+  - [x] Test keyboard, resize, full-screen, and accessibility behaviour.
 
 ## Testing and automation
 
