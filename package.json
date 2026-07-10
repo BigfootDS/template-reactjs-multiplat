@@ -62,7 +62,7 @@
     "capacitor:android:build": "npm run capacitor:android:prepare && npx cap build android"
   },
   "dependencies": {
-    "@bigfootds/bigfoot-fetcher": "^0.3.4",
+    "@bigfootds/bigfoot-fetcher": "^0.3.5",
     "@bigfootds/bigfootds-shared-data": "^3.0.0",
     "@capacitor/android": "^8.4.1",
     "@capacitor/core": "^8.4.1",
