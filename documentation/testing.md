@@ -24,7 +24,7 @@ Playwright traces are retained on the first retry. The HTML report command is `n
 
 Use accessible locators such as headings, buttons, labels, and links. Avoid selectors tied to CSS classes or implementation details unless the screen has no meaningful accessible surface.
 
-Browser-route coverage now belongs in the default suite. Add Electron-style hash-route coverage when router selection is introduced. When the renderer gains an IPC wrapper, test the browser fallback and mock the narrow wrapper, not the entire Electron module.
+Browser-route and Electron-style hash-route coverage belong in the default suite. The Electron-style test exposes a minimal preload bridge before the app loads, then verifies navigation changes the hash. When the renderer gains an IPC wrapper, test the browser fallback and mock the narrow wrapper, not the entire Electron module.
 
 ## CI expectation
 

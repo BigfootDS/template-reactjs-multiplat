@@ -28,3 +28,23 @@ test('renders every browser route and the not-found page', async ({ page }) => {
     await expect(page.getByRole('heading', { name: heading })).toBeVisible()
   }
 })
+
+test('uses hash routes when the Electron preload bridge is available', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'ipcRenderer', {
+      configurable: true,
+      value: {},
+    })
+  })
+
+  await page.goto('/#/about')
+
+  await expect(page.getByRole('heading', { name: 'About this template' })).toBeVisible()
+
+  await page.getByRole('navigation', { name: 'Primary navigation' })
+    .getByRole('link', { name: 'Diagnostics' })
+    .click()
+
+  await expect(page).toHaveURL(/#\/diagnostics$/)
+  await expect(page.getByRole('heading', { name: 'Diagnostics' })).toBeVisible()
+})

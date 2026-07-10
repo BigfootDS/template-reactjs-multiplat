@@ -23,10 +23,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Add a root layout that works in browser, Electron, and Capacitor builds.
   - [x] Lazy-load example pages to demonstrate code splitting.
   - [x] Add an accessible navigation pattern and a basic not-found route.
-- [ ] Add platform detection and router selection utilities.
-  - [ ] Create a browser-safe capability-detection module.
-  - [ ] Use `HashRouter` in packaged Electron builds and browser routing elsewhere.
-  - [ ] Move platform checks out of React page components.
+- [x] Add platform detection and router selection utilities.
+  - [x] Create a browser-safe capability-detection module.
+  - [x] Use `HashRouter` in packaged Electron builds and browser routing elsewhere.
+  - [x] Move platform checks out of React page components.
 - [ ] Formalise Electron IPC behind typed wrappers.
   - [ ] Define shared IPC channel names.
   - [ ] Add a main-process IPC initialisation module with input validation.
@@ -47,7 +47,7 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 
 - [ ] Extend Playwright coverage beyond the starter smoke test.
   - [x] Test each app-shell route in the browser.
-  - [ ] Test Electron-style hash routing.
+  - [x] Test Electron-style hash routing.
   - [ ] Add a narrow helper for mocking the renderer IPC wrapper.
   - [ ] Capture useful browser diagnostics on failure.
 - [ ] Split testing CI from release packaging.

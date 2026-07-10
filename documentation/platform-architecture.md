@@ -18,9 +18,9 @@ For example, a persistence adapter can ask whether IndexedDB, OPFS, or a native 
 
 ## Routing
 
-Use normal browser routing for web and Capacitor builds. Once the template has a routed shell, packaged Electron builds should use `HashRouter`, because they load from `file://` rather than an HTTP server.
+The template uses normal browser routing for web and Capacitor builds. It switches to `HashRouter` when Electron's preload bridge is available, because packaged Electron builds load from `file://` rather than an HTTP server.
 
-Keep router selection in one small platform utility. Do not scatter Electron checks across page components.
+`src/utils/platform.ts` owns capability detection and router selection. It checks the Electron preload bridge and Capacitor's native-platform capability without relying on a user-agent string. Do not scatter Electron or Capacitor checks across page components.
 
 ## Electron IPC
 
