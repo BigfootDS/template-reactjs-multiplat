@@ -9,6 +9,22 @@
     "name": "BigfootDS"
   },
   "description": "Template for a ReactJS app configured to run on Android, iOS, and multiple desktop operating systems.",
+  "bigfootds": {
+    "applicationName": "BigfootDS ReactJS Multiplatform Template",
+    "platformName": "ReactJS Multiplatform Template",
+    "platformType": "multiplatform",
+    "productName": "BigfootDS ReactJS Multiplatform Template",
+    "electron": {
+      "crossOriginIsolation": true,
+      "hideDefaultMenu": true,
+      "window": {
+        "height": 800,
+        "minHeight": 640,
+        "minWidth": 900,
+        "width": 1200
+      }
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BigfootDS/template-reactjs-multiplat.git"
@@ -46,6 +62,8 @@
     "capacitor:android:build": "npm run capacitor:android:prepare && npx cap build android"
   },
   "dependencies": {
+    "@bigfootds/bigfoot-fetcher": "^0.3.4",
+    "@bigfootds/bigfootds-shared-data": "^3.0.0",
     "@capacitor/android": "^8.4.1",
     "@capacitor/core": "^8.4.1",
     "@capgo/capacitor-env": "^8.1.31",

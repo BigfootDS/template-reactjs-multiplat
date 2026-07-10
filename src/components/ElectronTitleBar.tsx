@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { appMetadata } from '../utils/appMetadata'
 import { electronWindowControls } from '../utils/ipc/electronIpc'
 
 function ElectronTitleBar() {
@@ -28,7 +29,7 @@ function ElectronTitleBar() {
 
   return (
     <div className="electron-title-bar" role="toolbar" aria-label="Window controls">
-      <span className="electron-title-bar-name">BigfootDS Template</span>
+      <span className="electron-title-bar-name">{appMetadata.applicationName}</span>
       <div className="electron-title-bar-controls">
         <button aria-label="Minimise window" onClick={() => void electronWindowControls.minimise()} type="button">
           <span aria-hidden="true">−</span>

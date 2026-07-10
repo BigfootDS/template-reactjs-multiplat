@@ -2,7 +2,11 @@
 
 ## One source of product metadata
 
-Application name and version tend to be repeated in the browser title, Electron window, diagnostics screen, package output, and release workflow. Put the canonical values in `package.json`, then expose only the safe build-time fields that the renderer needs.
+Application name and version tend to be repeated in the browser title, Electron window, diagnostics screen, package output, and release workflow. The template keeps its canonical values in the `bigfootds` block in `package.json`, including the Bigfoot Fetcher fields `productName`, `platformName`, and `platformType`.
+
+Vite exposes only the safe metadata through `__APP_METADATA__` and makes the same fields available through the renderer's `process.env` object. This matches the configuration shape used by `@bigfootds/bigfoot-fetcher`, while loading only `VITE_` environment variables so a local secret is not accidentally bundled.
+
+Electron also reads its window dimensions, menu preference, and packaged cross-origin isolation policy from the Electron metadata block. Keep product-specific credentials out of this metadata.
 
 Do not expose secrets through Vite defines. The renderer bundle is public to the user.
 

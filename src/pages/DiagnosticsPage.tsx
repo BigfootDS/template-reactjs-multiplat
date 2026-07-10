@@ -1,4 +1,11 @@
+import { appMetadata } from '../utils/appMetadata'
+
 const diagnosticAreas = [
+  {
+    name: 'Product metadata',
+    value: appMetadata.productName,
+    detail: `${appMetadata.platformName} (${appMetadata.platformType}), version ${appMetadata.productVersion}.`,
+  },
   {
     name: 'App shell',
     value: 'Ready',

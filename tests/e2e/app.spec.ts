@@ -27,6 +27,9 @@ test('renders every browser route and the not-found page', async ({ page }) => {
     await page.goto(path)
     await expect(page.getByRole('heading', { name: heading })).toBeVisible()
   }
+
+  await page.goto('/diagnostics')
+  await expect(page.getByText('BigfootDS ReactJS Multiplatform Template', { exact: true })).toBeVisible()
 })
 
 test('uses hash routes when the Electron preload bridge is available', async ({ page }) => {

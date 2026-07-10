@@ -1,13 +1,17 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, type IpcMainInvokeEvent } from 'electron'
 import { IpcChannel } from '../src/shared/ipc'
 
 type GetWindow = () => BrowserWindow | null
 
-function getWindowOrThrow(getWindow: GetWindow): BrowserWindow {
+function getWindowOrThrow(event: IpcMainInvokeEvent, getWindow: GetWindow): BrowserWindow {
   const currentWindow = getWindow()
 
   if (!currentWindow || currentWindow.isDestroyed()) {
     throw new Error('No active application window is available.')
+  }
+
+  if (event.sender.id !== currentWindow.webContents.id) {
+    throw new Error('The IPC sender does not match the application window.')
   }
 
   return currentWindow
@@ -22,12 +26,12 @@ function requireBoolean(value: unknown): boolean {
 }
 
 export function initialiseIpc(getWindow: GetWindow): void {
-  ipcMain.handle(IpcChannel.WindowMinimise, () => {
-    getWindowOrThrow(getWindow).minimize()
+  ipcMain.handle(IpcChannel.WindowMinimise, (event) => {
+    getWindowOrThrow(event, getWindow).minimize()
   })
 
-  ipcMain.handle(IpcChannel.WindowToggleMaximise, () => {
-    const currentWindow = getWindowOrThrow(getWindow)
+  ipcMain.handle(IpcChannel.WindowToggleMaximise, (event) => {
+    const currentWindow = getWindowOrThrow(event, getWindow)
 
     if (currentWindow.isMaximized()) {
       currentWindow.unmaximize()
@@ -38,21 +42,22 @@ export function initialiseIpc(getWindow: GetWindow): void {
     return currentWindow.isMaximized()
   })
 
-  ipcMain.handle(IpcChannel.WindowClose, () => {
-    getWindowOrThrow(getWindow).close()
+  ipcMain.handle(IpcChannel.WindowClose, (event) => {
+    getWindowOrThrow(event, getWindow).close()
   })
 
-  ipcMain.handle(IpcChannel.WindowRestart, () => {
+  ipcMain.handle(IpcChannel.WindowRestart, (event) => {
+    getWindowOrThrow(event, getWindow)
     app.relaunch()
     app.quit()
   })
 
-  ipcMain.handle(IpcChannel.WindowGetFullscreen, () => {
-    return getWindowOrThrow(getWindow).isFullScreen()
+  ipcMain.handle(IpcChannel.WindowGetFullscreen, (event) => {
+    return getWindowOrThrow(event, getWindow).isFullScreen()
   })
 
-  ipcMain.handle(IpcChannel.WindowSetFullscreen, (_event, enabled: unknown) => {
-    const currentWindow = getWindowOrThrow(getWindow)
+  ipcMain.handle(IpcChannel.WindowSetFullscreen, (event, enabled: unknown) => {
+    const currentWindow = getWindowOrThrow(event, getWindow)
     currentWindow.setFullScreen(requireBoolean(enabled))
     return currentWindow.isFullScreen()
   })

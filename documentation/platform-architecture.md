@@ -29,7 +29,7 @@ The preload bridge exposes a small `window.electronApi` object to the renderer. 
 When a desktop feature is added:
 
 1. Add the IPC channel name and bridge type to `src/shared/ipc.ts`.
-2. Validate the request and perform the work in `electron/ipc.ts`.
+2. Confirm the sender belongs to the active application window, validate the request, and perform the work in `electron/ipc.ts`.
 3. Expose the smallest safe preload function needed by the renderer.
 4. Call that function through the typed wrapper in `src/utils/ipc/electronIpc.ts`.
 5. Keep normal React screens free of direct Electron bridge calls.
@@ -38,11 +38,15 @@ The template currently supports minimise, maximise, close, restart, and full-scr
 
 ## Electron window defaults
 
-Electron windows should have explicit title, size, minimum dimensions, preload path, and security settings. Development-only conveniences, such as DevTools, must stay behind a development check.
+Electron reads its title, dimensions, menu preference, and packaged cross-origin isolation setting from the `bigfootds` metadata block in `package.json`. The renderer receives only the safe application name and version at build time. Development-only conveniences, including detached DevTools, stay behind a development check.
 
-Treat external links as external. Open them with the operating system browser rather than allowing the renderer to create arbitrary Electron windows.
+The frameless template disables the default application menu because the renderer title bar supplies the window controls. Keep a native menu only when the product has commands that need it.
 
-The Electron build uses a frameless window and a renderer title bar with minimise, maximise, full-screen, and close controls. Those buttons use the typed IPC wrapper and only render when the Electron bridge is available. Cross-origin isolation headers remain a separate, opt-in feature.
+Treat external links as external. The main process denies renderer-created windows and opens only `https:` and `mailto:` links through the operating system browser. Do not pass arbitrary user-controlled URLs to `shell.openExternal`.
+
+The Electron build uses a frameless window and a renderer title bar with minimise, maximise, full-screen, and close controls. Those buttons use the typed IPC wrapper and only render when the Electron bridge is available.
+
+Packaged file builds set `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` when `bigfootds.electron.crossOriginIsolation` is enabled. This enables cross-origin isolation for APIs that require it, but any remote subresource must have compatible CORS or CORP headers. Disable the setting for a product that cannot meet that constraint, then document the trade-off.
 
 ## Capacitor and native configuration
 

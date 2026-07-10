@@ -32,12 +32,12 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Add a main-process IPC initialisation module with input validation.
   - [x] Replace direct renderer IPC calls with a typed wrapper and browser fallback.
   - [x] Add opt-in window controls for minimise, maximise, close, restart, and full-screen state.
-- [ ] Harden Electron main-process defaults.
-  - [ ] Configure explicit window title, dimensions, and minimum dimensions from application metadata.
-  - [ ] Disable or customise the default menu only when the application design needs it.
-  - [ ] Open external links in the operating-system browser.
-  - [ ] Restrict DevTools to development builds.
-  - [ ] Evaluate cross-origin isolation headers for packaged `file://` builds.
+- [x] Harden Electron main-process defaults.
+  - [x] Configure explicit window title, dimensions, and minimum dimensions from application metadata.
+  - [x] Disable or customise the default menu only when the application design needs it.
+  - [x] Open external links in the operating-system browser.
+  - [x] Restrict DevTools to development builds.
+  - [x] Evaluate cross-origin isolation headers for packaged `file://` builds.
 - [ ] Decide whether to provide an optional custom Electron title bar.
   - [x] Build a plain React and CSS proof of concept behind the Electron bridge.
   - [x] Enable it only when the Electron window uses a matching frameless configuration.
@@ -66,9 +66,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 ## Application metadata and assets
 
 - [ ] Add safe application metadata injection.
-  - [ ] Define the template metadata shape in `package.json`.
-  - [ ] Expose the safe name and version fields through Vite.
-  - [ ] Use the fields for the browser title, Electron window, diagnostics, and release names.
+  - [x] Define the template metadata shape in `package.json`.
+  - [x] Expose the safe name and version fields through Vite.
+  - [x] Use the fields for the browser title, Electron window, and diagnostics.
+  - [ ] Use the fields for release names.
 - [ ] Establish source-asset and generated-asset conventions.
   - [ ] Add placeholder source icons and logos in a documented source location.
   - [ ] Configure Electron and Capacitor tooling to consume the source assets.
