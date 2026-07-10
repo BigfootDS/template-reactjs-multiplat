@@ -54,11 +54,11 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Add a CI testing workflow that runs `npm ci`, linting, and Playwright.
   - [x] Upload Playwright reports when a testing job fails or is not cancelled.
   - [x] Make build and release jobs depend on the testing workflow.
-- [ ] Refine release and store deployment examples.
-  - [ ] Update the GitHub release flow to build from the semver commit it creates.
-  - [ ] Add optional Google Play and Steam workflow examples.
-  - [ ] Move store-specific values to repository variables and secrets.
-  - [ ] Document required secrets beside each optional workflow.
+- [x] Refine release and store deployment examples.
+  - [x] Update the GitHub release flow to build from the semver commit it creates.
+  - [x] Add optional Google Play and Steam workflow examples.
+  - [x] Move store-specific values to repository variables and secrets.
+  - [x] Document required secrets beside each optional workflow.
 - [ ] Decide when release workflows should run.
   - [ ] Choose between automatic `main` releases and manual dispatch for generated projects.
   - [ ] Record the decision in the release workflow and documentation.
