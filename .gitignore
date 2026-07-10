@@ -27,3 +27,5 @@ release/
 
 .env
 dist-electron/
+playwright-report/
+test-results/
