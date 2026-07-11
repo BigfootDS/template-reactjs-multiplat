@@ -5,6 +5,7 @@
   "asar": true,
   "productName": "YourAppName",
   "directories": {
+    "buildResources": "assets",
     "output": "release/${version}"
   },
   "files": [
@@ -12,12 +13,14 @@
     "dist-electron"
   ],
   "mac": {
+    "icon": "assets/icon.svg",
     "target": [
       "dmg"
     ],
     "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
   },
   "win": {
+    "icon": "assets/icon.svg",
     "target": [
       {
         "target": "nsis",
@@ -42,6 +45,7 @@
     "artifactName": "${productName}-Windows-${version}-Portable.${ext}"
   },
   "linux": {
+    "icon": "assets/icon.svg",
     "target": [
       {
         target: "AppImage"

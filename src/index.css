@@ -1,68 +1,89 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  --colour-active-surface: #e0e7ff;
+  --colour-border: #d5d9e3;
+  --colour-button-text: #ffffff;
+  --colour-close-hover: #b91c1c;
+  --colour-error-surface: #fee2e2;
+  --colour-error-text: #991b1b;
+  --colour-focus: #f59e0b;
+  --colour-heading: #15203b;
+  --colour-link: #334155;
+  --colour-link-hover-surface: #eef2ff;
+  --colour-link-strong: #1e3a8a;
+  --colour-muted: #475569;
+  --colour-page: #f8fafc;
+  --colour-primary: #1d4ed8;
+  --colour-primary-hover: #1e40af;
+  --colour-status-available-surface: #dcfce7;
+  --colour-status-available-text: #166534;
+  --colour-status-unavailable-surface: #fee2e2;
+  --colour-status-unavailable-text: #991b1b;
+  --colour-surface: #ffffff;
+  --colour-text: #1e293b;
+  --colour-title-bar: #15203b;
+  --colour-title-bar-hover: #334155;
+  --colour-title-bar-text: #ffffff;
+  background: var(--colour-page);
+  color: var(--colour-text);
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+:root[data-theme='dark'] {
+  --colour-active-surface: #1e3a8a;
+  --colour-border: #334155;
+  --colour-button-text: #ffffff;
+  --colour-close-hover: #b91c1c;
+  --colour-error-surface: #450a0a;
+  --colour-error-text: #fecaca;
+  --colour-focus: #fbbf24;
+  --colour-heading: #f8fafc;
+  --colour-link: #cbd5e1;
+  --colour-link-hover-surface: #1e293b;
+  --colour-link-strong: #bfdbfe;
+  --colour-muted: #cbd5e1;
+  --colour-page: #0f172a;
+  --colour-primary: #3b82f6;
+  --colour-primary-hover: #60a5fa;
+  --colour-status-available-surface: #14532d;
+  --colour-status-available-text: #dcfce7;
+  --colour-status-unavailable-surface: #450a0a;
+  --colour-status-unavailable-text: #fecaca;
+  --colour-surface: #162033;
+  --colour-text: #e2e8f0;
+  --colour-title-bar: #020617;
+  --colour-title-bar-hover: #1e293b;
+  --colour-title-bar-text: #f8fafc;
+  color-scheme: dark;
 }
-a:hover {
-  color: #535bf2;
+
+* {
+  box-sizing: border-box;
 }
 
 body {
+  background: var(--colour-page);
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  min-width: 20rem;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+button,
+a {
+  font: inherit;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+button,
+input,
+select {
+  color: inherit;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
+
+a:focus-visible,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  outline: 3px solid var(--colour-focus);
+  outline-offset: 3px;
 }

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Multiplatform template icon source</title>
+  <desc id="desc">A blue tile with a white layered window symbol.</desc>
+  <rect width="1024" height="1024" rx="224" fill="#0f172a"/>
+  <rect x="224" y="216" width="576" height="592" rx="96" fill="#2563eb"/>
+  <path d="M384 368h256c35.3 0 64 28.7 64 64v160c0 35.3-28.7 64-64 64H512c-35.3 0-64-28.7-64-64V496h192c17.7 0 32-14.3 32-32s-14.3-32-32-32H448v-16c0-26.5-21.5-48-48-48s-48 21.5-48 48v176c0 88.4 71.6 160 160 160h128c88.4 0 160-71.6 160-160V432c0-88.4-71.6-160-160-160H384c-17.7 0-32 14.3-32 32s14.3 32 32 32v32Z" fill="#ffffff"/>
+</svg>

@@ -1,0 +1,10 @@
+{
+  "appId": "com.bigfootds.projectid",
+  "appName": "BIGFOOTDS PROJECT NAME",
+  "webDir": "dist",
+  "android": {
+    "buildOptions": {
+      "releaseType": "AAB"
+    }
+  }
+}

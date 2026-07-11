@@ -1,0 +1,194 @@
+import { expect, test } from '@playwright/test'
+import { selectSettingsPersistenceAdapter } from '../../src/utils/settings/settingsPersistenceEnvironment'
+import { mockElectronBridge } from './helpers/electronBridge'
+
+test('renders the routed app shell and primary navigation', async ({ page }) => {
+  await page.goto('/')
+
+  await expect(page).toHaveTitle('BigfootDS ReactJS Multiplatform Template')
+  await expect(page.locator('html')).toHaveAttribute('dir', 'ltr')
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.getByRole('heading', { name: 'Start with a real app shell' })).toBeVisible()
+
+  const navigation = page.getByRole('navigation', { name: 'Primary navigation' })
+  await navigation.getByRole('link', { name: 'Settings' }).click()
+
+  await expect(page).toHaveURL(/\/settings$/)
+  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
+  await expect(navigation.getByRole('link', { name: 'Settings' })).toHaveAttribute('aria-current', 'page')
+  await expect(page.getByLabel('Interface language')).toHaveValue('en')
+})
+
+test('renders every browser route and the not-found page', async ({ page }) => {
+  const routes = [
+    { path: '/', heading: 'Start with a real app shell' },
+    { path: '/settings', heading: 'Settings' },
+    { path: '/diagnostics', heading: 'Diagnostics' },
+    { path: '/about', heading: 'About this template' },
+    { path: '/credits', heading: 'Credits' },
+    { path: '/missing-route', heading: 'Page not found' },
+  ]
+
+  for (const { path, heading } of routes) {
+    await page.goto(path)
+    await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible()
+  }
+
+  await page.goto('/credits')
+  await expect(page.getByRole('heading', { name: 'Application' })).toBeVisible()
+  await expect(page.getByText('BigfootDS ReactJS Multiplatform Template', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Git contributors' })).toBeVisible()
+  await expect(page.getByText('Alex Stormwood', { exact: true })).toBeVisible()
+  await expect(page.getByText('Alex', { exact: true })).toHaveCount(0)
+  await expect(page.getByText('AlexStormwood', { exact: true })).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Dependency licences' })).toBeVisible()
+  await expect(page.getByText(/\d+ commits?/).first()).toBeVisible()
+  const firstDependencyLicense = page.locator('details').first()
+  await expect(firstDependencyLicense).toBeVisible()
+  await firstDependencyLicense.locator('summary').click()
+  await expect(firstDependencyLicense.locator('pre')).toBeVisible()
+
+  const diagnosticsResponse = await page.goto('/diagnostics')
+  expect(diagnosticsResponse?.headers()).toMatchObject({
+    'cross-origin-embedder-policy': 'require-corp',
+    'cross-origin-opener-policy': 'same-origin',
+  })
+  await expect(page.getByText('BigfootDS ReactJS Multiplatform Template', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Runtime capabilities' })).toBeVisible()
+
+  const crossOriginIsolationDiagnostic = page.getByText('Cross-origin isolation', { exact: true }).locator('..')
+  await expect(crossOriginIsolationDiagnostic).toContainText('Available')
+  const settingsBackendDiagnostic = page.getByText('Settings persistence backend', { exact: true })
+    .locator('..')
+    .locator('..')
+  await expect(settingsBackendDiagnostic).toContainText('SQLocal with Kysely is selected')
+
+  for (const capability of [
+    'IndexedDB',
+    'Origin Private File System (OPFS)',
+    'Web Workers',
+    'Cross-origin isolation',
+    'Electron bridge',
+    'Capacitor native bridge',
+  ]) {
+    await expect(page.getByText(capability, { exact: true })).toBeVisible()
+  }
+
+  await expect(page.getByText(
+    'No Electron preload bridge is present. Desktop window controls use browser-safe fallbacks.',
+    { exact: true },
+  )).toBeVisible()
+  await expect(page.getByText(
+    'Capacitor does not report a native platform. Do not call native plugins from this runtime.',
+    { exact: true },
+  )).toBeVisible()
+
+  await page.getByRole('link', { name: 'Settings' }).click()
+  await expect(page.getByText('Loading saved preferences…')).toBeHidden()
+  await expect(page.getByRole('checkbox', { name: 'Mute all audio' })).toBeVisible()
+
+  const volume = page.getByRole('slider', { name: /Master volume/ })
+  await volume.evaluate((element, value) => {
+    const input = element as HTMLInputElement
+    const valueSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
+
+    if (!valueSetter) {
+      throw new Error('Unable to set the range input value.')
+    }
+
+    valueSetter.call(input, String(value))
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    input.dispatchEvent(new Event('change', { bubbles: true }))
+  }, 64)
+  await expect(page.getByText('Master volume: 64%')).toBeVisible()
+
+  await page.getByLabel('Colour theme').selectOption('dark')
+  await expect.poll(() => page.locator('html').getAttribute('data-theme')).toBe('dark')
+
+  await page.reload()
+  await expect(page.getByText('Loading saved preferences…')).toBeHidden()
+  await expect(page.getByText('Master volume: 64%')).toBeVisible()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+})
+
+test('uses hash routes when the Electron preload bridge is available', async ({ page }) => {
+  await mockElectronBridge(page)
+
+  await page.goto('/#/about')
+
+  await expect(page.getByRole('heading', { name: 'About this template' })).toBeVisible()
+
+  const titleBar = page.getByRole('toolbar', { name: 'Window controls' })
+  const minimiseButton = titleBar.getByRole('button', { name: 'Minimise window' })
+  const maximiseButton = titleBar.getByRole('button', { name: 'Maximise window' })
+  const fullscreenButton = titleBar.getByRole('button', { name: 'Enter full screen' })
+  const closeButton = titleBar.getByRole('button', { name: 'Close window' })
+
+  await expect(titleBar).toBeVisible()
+  await expect(titleBar).toHaveAccessibleName('Window controls')
+  await expect(titleBar).toHaveCSS('position', 'sticky')
+  await expect(titleBar).toHaveCSS('top', '0px')
+  await expect(minimiseButton).toHaveAccessibleName('Minimise window')
+  await expect(maximiseButton).toHaveAccessibleName('Maximise window')
+  await expect(fullscreenButton).toHaveAccessibleName('Enter full screen')
+  await expect(closeButton).toHaveAccessibleName('Close window')
+
+  await page.setViewportSize({ width: 900, height: 640 })
+  await expect(closeButton).toBeVisible()
+  const closeButtonBounds = await closeButton.boundingBox()
+  expect(closeButtonBounds).not.toBeNull()
+  expect((closeButtonBounds?.x ?? 0) + (closeButtonBounds?.width ?? 0)).toBeLessThanOrEqual(900)
+
+  await page.locator('.page-content').evaluate((element) => {
+    element.setAttribute('style', 'min-height: 200vh')
+  })
+  await page.evaluate(() => window.scrollTo(0, 200))
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+  const titleBarBounds = await titleBar.boundingBox()
+  expect(titleBarBounds).not.toBeNull()
+  expect(titleBarBounds?.y).toBe(0)
+
+  await minimiseButton.focus()
+  await expect(minimiseButton).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'minimise')
+
+  await maximiseButton.click()
+  await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'maximise')
+  await expect(titleBar.getByRole('button', { name: 'Restore window' })).toHaveAttribute('aria-pressed', 'true')
+
+  await fullscreenButton.focus()
+  await expect(fullscreenButton).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'enter-fullscreen')
+  await expect(titleBar.getByRole('button', { name: 'Exit full screen' })).toHaveAttribute('aria-pressed', 'true')
+
+  await page.getByRole('navigation', { name: 'Primary navigation' })
+    .getByRole('link', { name: 'Diagnostics' })
+    .click()
+
+  await expect(page).toHaveURL(/#\/diagnostics$/)
+  await expect(page.getByRole('heading', { name: 'Diagnostics', exact: true })).toBeVisible()
+  const electronBridgeDiagnostic = page.getByText('Electron bridge', { exact: true }).locator('..')
+  await expect(electronBridgeDiagnostic).toContainText('Available')
+  await page.getByRole('navigation', { name: 'Primary navigation' })
+    .getByRole('link', { name: 'Settings' })
+    .click()
+  await expect(page).toHaveURL(/#\/settings$/)
+  await expect(page.getByText('Loading saved preferences…')).toBeHidden()
+  await page.getByRole('checkbox', { name: 'Use full-screen mode' }).click()
+  await expect.poll(() => page.locator('html').getAttribute('data-last-window-control'))
+    .toBe('enter-fullscreen')
+  await closeButton.click()
+  await expect(page.locator('html')).toHaveAttribute('data-last-window-control', 'close')
+})
+
+test('selects IndexedDB settings for a Capacitor runtime without isolated OPFS', () => {
+  expect(selectSettingsPersistenceAdapter({
+    hasIndexedDb: true,
+    hasOpfs: false,
+    hasWorker: true,
+    isCapacitor: true,
+    isCrossOriginIsolated: false,
+  })).toBe('indexeddb')
+})

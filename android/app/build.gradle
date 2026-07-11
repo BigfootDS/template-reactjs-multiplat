@@ -1,5 +1,16 @@
 apply plugin: 'com.android.application'
 
+def signingEnvironment = [
+    storeFile: System.getenv('ANDROID_SIGNING_STORE_FILE'),
+    storePassword: System.getenv('ANDROID_SIGNING_STORE_PASSWORD'),
+    keyAlias: System.getenv('ANDROID_SIGNING_KEY_ALIAS'),
+    keyPassword: System.getenv('ANDROID_SIGNING_KEY_PASSWORD'),
+]
+def releaseSigningConfigured = signingEnvironment.values().every { value ->
+    value != null && !value.trim().isEmpty()
+}
+def signingStoreType = System.getenv('ANDROID_SIGNING_STORE_TYPE')
+
 android {
     namespace = "com.bigfootds.reactjsmultiplattemplate"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +18,8 @@ android {
         applicationId "com.bigfootds.reactjsmultiplattemplate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 10
+        versionName "0.0.10"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +27,25 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (releaseSigningConfigured) {
+                storeFile file(signingEnvironment.storeFile)
+                storePassword signingEnvironment.storePassword
+                keyAlias signingEnvironment.keyAlias
+                keyPassword signingEnvironment.keyPassword
+
+                if (signingStoreType != null && !signingStoreType.trim().isEmpty()) {
+                    storeType signingStoreType
+                }
+            }
+        }
+    }
     buildTypes {
         release {
+            if (releaseSigningConfigured) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
