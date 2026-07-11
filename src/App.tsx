@@ -8,6 +8,7 @@ const HomePage = lazy(() => import('./pages/HomePage'))
 const SettingsPage = lazy(() => import('./pages/SettingsPage'))
 const DiagnosticsPage = lazy(() => import('./pages/DiagnosticsPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
+const CreditsPage = lazy(() => import('./pages/CreditsPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 function AppLayout() {
@@ -17,6 +18,7 @@ function AppLayout() {
     { to: '/settings', label: t('navigation_settings') },
     { to: '/diagnostics', label: t('navigation_diagnostics') },
     { to: '/about', label: t('navigation_about') },
+    { to: '/credits', label: t('navigation_credits') },
   ]
 
   return (
@@ -59,6 +61,7 @@ function App() {
         <Route element={<SettingsPage />} path="settings" />
         <Route element={<DiagnosticsPage />} path="diagnostics" />
         <Route element={<AboutPage />} path="about" />
+        <Route element={<CreditsPage />} path="credits" />
         <Route element={<NotFoundPage />} path="*" />
       </Route>
     </Routes>

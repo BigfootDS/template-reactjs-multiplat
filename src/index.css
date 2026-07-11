@@ -22,6 +22,7 @@
   --colour-text: #1e293b;
   --colour-title-bar: #15203b;
   --colour-title-bar-hover: #334155;
+  --colour-title-bar-text: #ffffff;
   background: var(--colour-page);
   color: var(--colour-text);
   color-scheme: light;
@@ -56,6 +57,7 @@
   --colour-text: #e2e8f0;
   --colour-title-bar: #020617;
   --colour-title-bar-hover: #1e293b;
+  --colour-title-bar-text: #f8fafc;
   color-scheme: dark;
 }
 

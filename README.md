@@ -38,6 +38,8 @@ The end-to-end command builds the app, starts a production preview on `127.0.0.1
 | Preview the production web build | `npm run react:preview` |
 | Run type-aware linting | `npm run react:lint` |
 | Generate per-language localisation files | `npm run localisation:split` |
+| Generate the dependency licence snapshot | `npm run project:npmcompliance:update` |
+| Generate the Git contributor snapshot | `npm run project:contributors:update` |
 | Run the Playwright browser suite | `npm run react:test:e2e` |
 | Open the Playwright test UI | `npm run react:test:e2e:ui` |
 | Synchronise and build Android | `npm run capacitor:android:build` |
@@ -76,6 +78,7 @@ The focused guides are:
 - [SQLocal and Kysely settings recipe](documentation/sqlocal-kysely-recipe.md)
 - [UI and theming](documentation/ui-and-theming.md)
 - [Localisation](documentation/localisation.md)
+- [Credits and licence data](documentation/credits-and-licences.md)
 - [CI and releases](documentation/ci-and-releases.md)
 - [Metadata, assets, and optional integrations](documentation/metadata-assets-and-optional-integrations.md)
 - [Godmaker dogfooding adoption backlog](documentation/game-godmaker-dogfooding-updates.md)

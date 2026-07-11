@@ -100,10 +100,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Add a minimal `i18next` and `react-i18next` example.
   - [x] Add a language provider and one English translation file.
   - [x] Generate per-language files and a manifest from one checked-in master JSON file with a split script.
-- [ ] Create a dependency licence and credits workflow.
-  - [ ] Choose a licence-data generation approach.
-  - [ ] Add a generated-data location and ignore rules.
-  - [ ] Add an About or Credits page example that displays application and licence metadata.
+- [x] Create a dependency licence and credits workflow.
+  - [x] Generate grouped direct-dependency licence data with `@bigfootds/npm-compliance-helper`.
+  - [x] Add tracked generated-data snapshots for dependency notices and privacy-conscious Git contributor acknowledgement.
+  - [x] Add a Credits route that displays application, contributor, and dependency licence metadata.
 
 ## Capacitor and documentation decisions
 

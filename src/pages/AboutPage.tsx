@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
 
 function AboutPage() {
   const { t } = useTranslation()
@@ -17,6 +18,9 @@ function AboutPage() {
         <h2>{t('about_change_first')}</h2>
         <p>{t('about_change_first_description')}</p>
       </section>
+      <div className="page-actions">
+        <Link className="button-link" to="/credits">{t('about_view_credits')}</Link>
+      </div>
     </div>
   )
 }

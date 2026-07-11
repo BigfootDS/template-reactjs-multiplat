@@ -32,6 +32,8 @@ Generated output is not source artwork. Do not hand-edit it or commit newly gene
 | `dist/` and `dist-electron/` | Vite and Electron builds | Ignored build output. |
 | `release/` | Electron Builder | Ignored packaging output. |
 | `playwright-report/` and `test-results/` | Playwright | Ignored test diagnostics. |
+| `src/assets/organisedLicenseData.json` | `npm run project:npmcompliance:update` | Generated and tracked because the Credits route bundles the current direct-dependency notices. |
+| `src/assets/gitContributors.json` | `npm run project:contributors:update`, using `scripts/git-contributor-people.json` | Generated and tracked because the Credits route shows one primary name per person and a privacy-conscious Git acknowledgement. |
 
 Some Capacitor resource files are already checked into the native project. Git continues to show changes to tracked files even after an ignore rule is added. Treat those changes as generated output and review or remove them in a dedicated native-project cleanup, not by editing the files manually.
 
@@ -46,6 +48,6 @@ The default template remains deliberately small. Add one of these directions onl
 | SQLocal and Kysely | The product needs relational local data, migrations, and queries beyond a small preference store. |
 | Steam runtime and deployment | The desktop product ships through Steam and has a real app ID and release process. |
 | Google Play deployment | The Android product has a release track, signing setup, and service-account credentials. |
-| Dependency licence screen | The product needs to present generated third-party licence data in an About or Credits screen. |
+| Dependency licence screen | The included Credits route shows grouped dependency notices and Git contributor names. Keep, customise, or remove each section during project setup. |
 
 Do not import a game-specific visual theme, game state, multiplayer system, or store integration simply because it existed in Godmaker. The reusable lesson is the boundary and workflow, not the product code.

@@ -205,7 +205,7 @@
 .electron-title-bar {
   align-items: center;
   background: var(--colour-title-bar);
-  color: var(--colour-surface);
+  color: var(--colour-title-bar-text);
   display: flex;
   flex: 0 0 2.25rem;
   height: 2.25rem;
@@ -276,6 +276,87 @@
   margin: 0;
   max-width: 48rem;
   padding: 1rem;
+}
+
+.credits-contributor-list {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.credits-application-metadata {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.credits-application-metadata div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.credits-application-metadata dt {
+  color: var(--colour-heading);
+  font-weight: 700;
+}
+
+.credits-application-metadata dd {
+  color: var(--colour-muted);
+  margin: 0;
+}
+
+.credits-contributor-list li {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  justify-content: space-between;
+}
+
+.credits-contributor-list li span:last-child {
+  color: var(--colour-muted);
+  font-size: 0.875rem;
+}
+
+.credits-license-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.credits-license {
+  background: var(--colour-page);
+  border: 1px solid var(--colour-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.credits-license summary {
+  color: var(--colour-heading);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.credits-license-notices {
+  color: var(--colour-muted);
+  font-size: 0.875rem;
+}
+
+.credits-license-notices h3 {
+  color: var(--colour-heading);
+  font-size: 1rem;
+}
+
+.credits-license-text {
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-border);
+  color: var(--colour-text);
+  max-height: 24rem;
+  overflow: auto;
+  padding: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 @media (max-width: 42rem) {

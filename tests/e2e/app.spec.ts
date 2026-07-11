@@ -25,6 +25,7 @@ test('renders every browser route and the not-found page', async ({ page }) => {
     { path: '/settings', heading: 'Settings' },
     { path: '/diagnostics', heading: 'Diagnostics' },
     { path: '/about', heading: 'About this template' },
+    { path: '/credits', heading: 'Credits' },
     { path: '/missing-route', heading: 'Page not found' },
   ]
 
@@ -32,6 +33,20 @@ test('renders every browser route and the not-found page', async ({ page }) => {
     await page.goto(path)
     await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible()
   }
+
+  await page.goto('/credits')
+  await expect(page.getByRole('heading', { name: 'Application' })).toBeVisible()
+  await expect(page.getByText('BigfootDS ReactJS Multiplatform Template', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Git contributors' })).toBeVisible()
+  await expect(page.getByText('Alex Stormwood', { exact: true })).toBeVisible()
+  await expect(page.getByText('Alex', { exact: true })).toHaveCount(0)
+  await expect(page.getByText('AlexStormwood', { exact: true })).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Dependency licences' })).toBeVisible()
+  await expect(page.getByText(/\d+ commits?/).first()).toBeVisible()
+  const firstDependencyLicense = page.locator('details').first()
+  await expect(firstDependencyLicense).toBeVisible()
+  await firstDependencyLicense.locator('summary').click()
+  await expect(firstDependencyLicense.locator('pre')).toBeVisible()
 
   const diagnosticsResponse = await page.goto('/diagnostics')
   expect(diagnosticsResponse?.headers()).toMatchObject({
