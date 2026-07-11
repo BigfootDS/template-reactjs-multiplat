@@ -1,0 +1,14 @@
+{
+  "appId": "com.bigfootds.projectid",
+  "appName": "BIGFOOTDS PROJECT NAME",
+  "webDir": "dist",
+  "android": {
+    "buildOptions": {
+      "releaseType": "AAB",
+      "keystorePath": "./release-keystore",
+      "keystorePassword": "SomeBetterPasswordOrEnvValueHere1",
+      "keystoreAlias": "SomeBetterAliasOrEnvValueHere",
+      "keystoreAliasPassword": "SomeBetterPasswordOrEnvValueHere2"
+    }
+  }
+}

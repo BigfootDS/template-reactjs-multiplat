@@ -40,6 +40,8 @@ The end-to-end command builds the app, starts a production preview on `127.0.0.1
 | Generate per-language localisation files | `npm run localisation:split` |
 | Generate the dependency licence snapshot | `npm run project:npmcompliance:update` |
 | Generate the Git contributor snapshot | `npm run project:contributors:update` |
+| Synchronise Android version fields from `package.json` | `npm run capacitor:version:sync` |
+| Check Android version fields against `package.json` | `npm run capacitor:version:check` |
 | Run the Playwright browser suite | `npm run react:test:e2e` |
 | Open the Playwright test UI | `npm run react:test:e2e:ui` |
 | Synchronise and build Android | `npm run capacitor:android:build` |
@@ -55,12 +57,12 @@ The end-to-end command builds the app, starts a production preview on `127.0.0.1
 | `public/` | Static web assets. |
 | `tests/e2e/` | Playwright end-to-end tests. |
 | `documentation/` | Architecture, workflow, and adoption notes. |
-| `capacitor.config.ts` | Capacitor application configuration. |
+| `capacitor.config.json` | Capacitor application configuration. |
 | `electron-builder.json5` | Desktop packaging configuration. |
 
 ## Creating a project from this template
 
-Before publishing a real product, replace the template identity in `package.json`, `capacitor.config.ts`, and `electron-builder.json5`. Give the app a real name, package ID, icons, and release output names.
+Before publishing a real product, replace the template identity in `package.json`, `capacitor.config.json`, and `electron-builder.json5`. Give the app a real name, package ID, icons, and release output names.
 
 Set up signing outside the repository. Local builds can read from your own environment, while CI should read from repository secrets. The checked-in configuration must never contain a real keystore, password, or production API key.
 

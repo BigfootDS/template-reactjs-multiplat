@@ -12,7 +12,7 @@ This repository is a browser-first React template that can also ship through Ele
 
 - Keep normal React code in `src/` browser-safe. Do not import Electron, Node-only packages, or Capacitor-native APIs directly into shared UI components.
 - Keep Electron main-process and preload code in `electron/`. The renderer should call a small, typed wrapper rather than access a broad `window.ipcRenderer` bridge throughout the UI.
-- Keep Capacitor-specific configuration and native project changes in `capacitor.config.ts` and the relevant native directory. Use capability checks or a platform adapter before calling native-only code.
+- Keep Capacitor-specific configuration and native project changes in `capacitor.config.json` and the relevant native directory. Use capability checks or a platform adapter before calling native-only code.
 - When routing is added, use normal browser routing for web and Capacitor builds. Use hash routing for packaged Electron builds that load from `file://`.
 - Prefer feature detection over platform-name checks. A capability is more useful than a guess about the operating system.
 - Put cross-process IPC channel names in one shared module. Validate inputs in the Electron main process and expose only the operations the renderer needs.
@@ -32,6 +32,7 @@ This repository is a browser-first React template that can also ship through Ele
 - Localisation uses `src/utils/localisation/i18nLocalization.json` as its only source of truth. Run `npm run localisation:split` after changing it; never edit or commit `src/utils/localisation/generated/`.
 - Use `useTranslation()` and stable localisation keys for user-facing UI content. `LanguageProvider` synchronises the persisted `settings.language.code` value with i18next and the document language attributes.
 - Credits data in `src/assets/organisedLicenseData.json` and `src/assets/gitContributors.json` is generated but tracked because the lazy Credits route bundles it. Map Git aliases to primary people in `scripts/git-contributor-people.json`, refresh the relevant snapshot after dependency or contributor-history changes, and do not edit either generated file by hand.
+- Treat `package.json` `version` as the canonical release version. `npm run capacitor:version:sync` writes its stable `MAJOR.MINOR.PATCH` value into Android through Capver; do not edit Android `versionName` or `versionCode` by hand.
 - Treat Mantine, Steam, store deployment, and similar stacks as opt-in directions. They are not default dependencies. A generated project that does not need localisation may remove the included English-only recipe as one deliberate cleanup.
 - Keep a source icon and logo outside generated platform output. Do not hand-edit generated Capacitor, Electron, or store assets.
 - Never commit signing keys, passwords, API keys, app IDs for a real product, or other credentials. Read values from local environment configuration or CI secrets.
@@ -46,6 +47,8 @@ Use the smallest relevant command while working, then run the broader checks bef
 | Lint TypeScript and React code | `npm run react:lint` |
 | Build the web and Electron bundles | `npm run react:build` |
 | Run the Chromium end-to-end suite | `npm run react:test:e2e` |
+| Synchronise Android version fields | `npm run capacitor:version:sync` |
+| Check Android version fields | `npm run capacitor:version:check` |
 | Open the Playwright test UI | `npm run react:test:e2e:ui` |
 | Sync and build Android | `npm run capacitor:android:build` |
 | Package a Windows portable build | `npm run electron:build:windows:portable` |

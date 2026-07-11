@@ -107,10 +107,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
 
 ## Capacitor and documentation decisions
 
-- [ ] Evaluate Capacitor version synchronisation.
-  - [ ] Test `@capawesome/capver` against the template's Android build.
-  - [ ] Decide how package versions map to Android version fields.
-  - [ ] Add a version-sync script only after the mapping is documented and tested.
+- [x] Evaluate Capacitor version synchronisation.
+  - [x] Test `@capawesome/capver` against the template's Android build.
+  - [x] Map package SemVer releases to Android `versionName` and a deterministic `versionCode`.
+  - [x] Add and document package-version-driven synchronisation and verification scripts.
 - [ ] Move real signing configuration out of static application configuration.
   - [ ] Define environment variable names for local signing.
   - [ ] Define repository secrets for CI signing.

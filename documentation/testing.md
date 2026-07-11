@@ -26,6 +26,8 @@ Use accessible locators such as headings, buttons, labels, and links. Avoid sele
 
 Browser-route and Electron-style hash-route coverage belong in the default suite. The suite also verifies the generated English localisation fallback, document language attributes, the Credits route's Git contributor and dependency-licence sections, the SQLocal-backed settings seed, persisted volume and colour-theme preferences after a reload, capability diagnostics, and Electron fullscreen through the narrow preload mock. The Electron-style test exposes that mock before the app loads, then verifies hash navigation and the custom title bar's labelled controls, keyboard activation, responsive layout at the desktop minimum size, and full-screen state. When the renderer gains another IPC wrapper, extend that helper to mock the narrow wrapper rather than the entire Electron module.
 
+Native version synchronisation has its own deterministic check. Run `npm run capacitor:version:sync` followed by `npm run capacitor:version:check` whenever `package.json` changes version. The Android build command runs the sync step before Capacitor syncs or Gradle builds the project.
+
 ## CI expectation
 
 Testing belongs before release packaging. A testing workflow should install with `npm ci`, run `npm run react:lint`, run `npm run react:test:e2e`, and upload Playwright reports when a job fails or is not cancelled.

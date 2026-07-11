@@ -173,4 +173,29 @@ Use a restricted Steam build account, not a personal administrator account. The 
 
 ## Version synchronisation
 
-A project that ships through Capacitor can choose to synchronise the package version into the native project before generating assets or building an Android release. This is useful only after the project has chosen a versioning policy and verified how each store interprets the native version fields.
+`package.json` `version` is the one canonical release version for this template. Release workflows already read it for tags and display names, and Capver now writes that same number into the Android project before every `capacitor:android:compile` run.
+
+Run these commands directly when checking a native version change:
+
+```powershell
+npm run capacitor:version:sync
+npm run capacitor:version:check
+```
+
+The sync wrapper passes the current `package.json` version to `@capawesome/capver set`. It does not use Capver's `sync` command because that command chooses the highest version found across platforms, which would let a stale Android value override the package version.
+
+### Android mapping
+
+The template uses Capver's `MMmmmmppp` pattern. Android `versionName` is exactly the package version. Android `versionCode` is the positive integer formed by the major version followed by the minor version padded to four digits and patch version padded to three digits.
+
+| Package version | Android `versionName` | Android `versionCode` |
+| --- | --- | --- |
+| `0.0.10` | `0.0.10` | `10` |
+| `1.2.3` | `1.2.3` | `10002003` |
+| `12.34.5` | `12.34.5` | `120034005` |
+
+This produces a monotonically increasing version code for normal SemVer releases and supports up to `9999` minor versions and `999` patch versions. The scripts reject `0.0.0` and codes above Android's positive-integer limit, including every `215.x.y` version and the upper end of `214.x.y`.
+
+Capver's native mapping accepts only the release form `MAJOR.MINOR.PATCH`. The wrapper deliberately rejects prerelease and build metadata rather than silently removing it from `package.json`. A project that needs mobile prereleases must define a store channel and Android version-code policy first, then extend this wrapper as a product-specific decision.
+
+See the [Capver documentation](https://github.com/capawesome-team/capver) for its platform support and pattern options.

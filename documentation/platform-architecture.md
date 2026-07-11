@@ -10,7 +10,7 @@ The cost is discipline. A React component that imports Electron or a Node-only p
 
 Put shared user-interface and domain code in `src/`. It must work in a regular browser unless it deliberately calls an adapter.
 
-Put desktop main-process and preload code in `electron/`. Put Capacitor configuration and native changes in `capacitor.config.ts` and the matching native project. Keep the boundary obvious so a contributor can see which runtime owns a piece of code.
+Put desktop main-process and preload code in `electron/`. Put Capacitor configuration and native changes in `capacitor.config.json` and the matching native project. Keep the boundary obvious so a contributor can see which runtime owns a piece of code.
 
 When a feature genuinely needs platform behaviour, expose a small browser-safe interface from `src/utils/` and provide the platform implementation behind it. Prefer asking whether a capability exists over checking a platform string.
 
