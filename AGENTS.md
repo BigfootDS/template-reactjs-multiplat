@@ -36,6 +36,7 @@ This repository is a browser-first React template that can also ship through Ele
 - Treat Mantine, Steam, store deployment, and similar stacks as opt-in directions. They are not default dependencies. A generated project that does not need localisation may remove the included English-only recipe as one deliberate cleanup.
 - Keep a source icon and logo outside generated platform output. Do not hand-edit generated Capacitor, Electron, or store assets.
 - Never commit signing keys, passwords, API keys, app IDs for a real product, or other credentials. Read values from local environment configuration or CI secrets.
+- Keep Android signing values out of `capacitor.config.json`. The signed local-build wrapper reads `ANDROID_SIGNING_*` values from the ignored `.env.local` file or the developer's secret manager and supplies them to Gradle only for that build.
 
 ## Commands and verification
 
@@ -49,8 +50,10 @@ Use the smallest relevant command while working, then run the broader checks bef
 | Run the Chromium end-to-end suite | `npm run react:test:e2e` |
 | Synchronise Android version fields | `npm run capacitor:version:sync` |
 | Check Android version fields | `npm run capacitor:version:check` |
+| Create an ignored local environment template | `npm run setup:env` |
 | Open the Playwright test UI | `npm run react:test:e2e:ui` |
 | Sync and build Android | `npm run capacitor:android:build` |
+| Build a locally signed Android AAB | `npm run capacitor:android:build:signed` |
 | Package a Windows portable build | `npm run electron:build:windows:portable` |
 
 - Use `npm ci` in CI and when you need a clean, lockfile-faithful install. Use `npm install` when intentionally changing dependencies.

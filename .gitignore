@@ -26,6 +26,8 @@ dist-ssr
 release/
 
 .env
+*.jks
+*.keystore
 dist-electron/
 playwright-report/
 test-results/

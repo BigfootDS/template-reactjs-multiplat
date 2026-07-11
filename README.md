@@ -42,9 +42,11 @@ The end-to-end command builds the app, starts a production preview on `127.0.0.1
 | Generate the Git contributor snapshot | `npm run project:contributors:update` |
 | Synchronise Android version fields from `package.json` | `npm run capacitor:version:sync` |
 | Check Android version fields against `package.json` | `npm run capacitor:version:check` |
+| Create an ignored local environment template | `npm run setup:env` |
 | Run the Playwright browser suite | `npm run react:test:e2e` |
 | Open the Playwright test UI | `npm run react:test:e2e:ui` |
 | Synchronise and build Android | `npm run capacitor:android:build` |
+| Build a locally signed Android AAB | `npm run capacitor:android:build:signed` |
 | Build a Windows portable Electron package | `npm run electron:build:windows:portable` |
 
 ## Project layout
@@ -64,7 +66,7 @@ The end-to-end command builds the app, starts a production preview on `127.0.0.1
 
 Before publishing a real product, replace the template identity in `package.json`, `capacitor.config.json`, and `electron-builder.json5`. Give the app a real name, package ID, icons, and release output names.
 
-Set up signing outside the repository. Local builds can read from your own environment, while CI should read from repository secrets. The checked-in configuration must never contain a real keystore, password, or production API key.
+Set up signing outside the repository. Run `npm run setup:env`, add your local Android signing values to the ignored `.env.local` file, then use `npm run capacitor:android:build:signed` when you need an installable release build. CI reads the equivalent values from repository secrets. The checked-in configuration must never contain a real keystore, password, or production API key. [CI and releases](documentation/ci-and-releases.md#android-signing) has the full local and CI setup.
 
 If you need platform behaviour, read [Platform architecture](documentation/platform-architecture.md) first. It explains where browser, Electron, and Capacitor code belongs.
 

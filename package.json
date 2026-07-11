@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/BigfootDS/template-reactjs-multiplat#readme",
   "scripts": {
+    "setup:env": "node scripts/setup-local-env.mjs",
     "localisation:split": "node src/utils/localisation/splitLocalization.mjs",
     "project:contributors:update": "node scripts/generate-git-contributors.mjs",
     "project:npmcompliance:update": "npx @bigfootds/npm-compliance-helper > ./src/assets/organisedLicenseData.json",
@@ -63,6 +64,7 @@
     "capacitor:android:prepare": "npm run capacitor:android:prepare:assets && npm run capacitor:android:compile",
     "capacitor:android:run": "npm run capacitor:android:prepare && npx cap run android",
     "capacitor:android:build": "npm run capacitor:android:prepare && npx cap build android",
+    "capacitor:android:build:signed": "node scripts/build-signed-android.mjs",
     "capacitor:version:check": "node scripts/check-capacitor-version.mjs",
     "capacitor:version:sync": "node scripts/sync-capacitor-version.mjs"
   },

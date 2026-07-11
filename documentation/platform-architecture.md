@@ -54,7 +54,7 @@ The Electron headers are enabled when `bigfootds.electron.crossOriginIsolation` 
 
 Capacitor consumes the web build in `dist/`. Run the relevant Capacitor sync command after changing web assets, plugins, or native configuration.
 
-The checked-in Capacitor configuration is template data, not production signing configuration. Real app IDs, keystores, passwords, and store credentials belong in local environment setup or CI secrets.
+The checked-in Capacitor configuration is template data, not production signing configuration. The non-secret Android release type stays there, but no keystore path, password, or alias does. `npm run capacitor:android:build:signed` reads `ANDROID_SIGNING_*` values from the ignored `.env.local` file or a local secret manager and passes them to Gradle through its child-process environment. CI uses repository secrets. See [CI and releases](ci-and-releases.md#android-signing) for the exact setup.
 
 ## What does not belong in the default template
 

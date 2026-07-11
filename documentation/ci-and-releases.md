@@ -37,6 +37,85 @@ The primary packaging workflow also requires these GitHub Actions secrets:
 | `GOOGLEPLAY_KEYSTOREKEYPASS` | Password for the selected signing key. |
 | `DISCORD_WEBHOOK_URL` | Release announcement webhook. Remove the notification step if the project does not use Discord. |
 
+## Android signing
+
+The checked-in `capacitor.config.json` names the Android release type only. It deliberately contains no keystore path, alias, or password. The template has two separate signing paths:
+
+- `npm run capacitor:android:build` is useful for a normal local packaging check. Without signing values, it produces an unsigned release AAB.
+- `npm run capacitor:android:build:signed` is the local developer path. It loads local signing values, prepares the Capacitor project, and builds a signed AAB.
+- `.github/workflows/ci_build.yaml` builds an unsigned AAB on the GitHub runner, then signs that result from GitHub Actions secrets. It does not use a checked-in Android signing configuration.
+
+### Local signed builds
+
+Use an Android upload key that lives outside the repository. If the product uses Play App Signing, follow the [Android signing guide](https://developer.android.com/studio/publish/app-signing) for the product's upload-key and app-signing-key decisions. Losing a key or its password is a product recovery problem, not something a template can safely fix, so keep an encrypted backup and store passwords in the team's password manager.
+
+For a new local upload key, create a directory outside the repository and let `keytool` prompt for the sensitive values:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.bigfootds\android" | Out-Null
+keytool -genkeypair -v `
+  -keystore "$HOME\.bigfootds\android\product-upload.jks" `
+  -alias product-upload `
+  -keyalg RSA `
+  -keysize 4096 `
+  -validity 10000
+```
+
+Create the ignored local environment file once:
+
+```powershell
+npm run setup:env
+```
+
+Then fill in `.env.local`. The template includes the variable names only in `.env.example`; do not put real values there.
+
+| Local variable | Purpose |
+| --- | --- |
+| `ANDROID_SIGNING_STORE_FILE` | Absolute keystore path, or a path relative to the repository root. Keep the file outside the repository. |
+| `ANDROID_SIGNING_STORE_PASSWORD` | Password for the keystore. |
+| `ANDROID_SIGNING_KEY_ALIAS` | Alias of the signing key inside the keystore. |
+| `ANDROID_SIGNING_KEY_PASSWORD` | Password for that signing key. |
+| `ANDROID_SIGNING_STORE_TYPE` | Optional keystore format. It defaults to `JKS`; use `PKCS12` only when that is the selected key's format. |
+
+For example, the local file should contain values with the same alias and paths you chose, not this template's values:
+
+```dotenv
+ANDROID_SIGNING_STORE_FILE="C:\Users\your-name\.bigfootds\android\product-upload.jks"
+ANDROID_SIGNING_STORE_PASSWORD="replace-with-your-keystore-password"
+ANDROID_SIGNING_KEY_ALIAS=product-upload
+ANDROID_SIGNING_KEY_PASSWORD="replace-with-your-key-password"
+ANDROID_SIGNING_STORE_TYPE=JKS
+```
+
+Build the signed bundle with:
+
+```powershell
+npm run capacitor:android:build:signed
+```
+
+The wrapper gives those values to Gradle through the build process environment. They never go into `capacitor.config.json`, `android/app/build.gradle`, or its command-line arguments. Values supplied through the developer's environment take precedence over `.env.local`, so a local secret manager can replace the file completely. Do not prefix signing variables with `VITE_`, because Vite exposes that prefix to browser code.
+
+`.env.local`, `.jks`, and `.keystore` files are ignored by Git in this template. They are still sensitive plaintext or key material on the developer's machine, so do not copy them into issue trackers, chat, build logs, or cloud-sync folders that are outside the team's approved secret-storage process.
+
+### CI signing secrets
+
+The current Android release job expects these repository or organisation secrets. Their names intentionally differ from the local variables because the workflow passes them directly to its signing action.
+
+| GitHub Actions secret | Value |
+| --- | --- |
+| `GOOGLEPLAY_SIGNINGKEYBASE64` | Base64 encoding of the upload-keystore bytes, with no surrounding JSON or quotes. |
+| `GOOGLEPLAY_KEYALIAS` | Upload-key alias. |
+| `GOOGLEPLAY_KEYSTOREPASS` | Keystore password. |
+| `GOOGLEPLAY_KEYSTOREKEYPASS` | Upload-key password. |
+
+In PowerShell, this reads a local keystore and prints the base64 value that can be pasted into the GitHub secret form:
+
+```powershell
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes("$HOME\.bigfootds\android\product-upload.jks"))
+```
+
+Set `APP_NAME` as a repository variable as described above. Never place any of these secret values in a workflow file, `package.json`, Capacitor configuration, or a committed environment file.
+
 ## Optional store deployment recipes
 
 GitHub release, Google Play, Steam, and similar deployment paths are optional examples, not default template behaviour. Each project needs its own application IDs, release channels, and signing credentials.

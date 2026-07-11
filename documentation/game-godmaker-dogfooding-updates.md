@@ -111,10 +111,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Test `@capawesome/capver` against the template's Android build.
   - [x] Map package SemVer releases to Android `versionName` and a deterministic `versionCode`.
   - [x] Add and document package-version-driven synchronisation and verification scripts.
-- [ ] Move real signing configuration out of static application configuration.
-  - [ ] Define environment variable names for local signing.
-  - [ ] Define repository secrets for CI signing.
-  - [ ] Document local and CI release-signing setup without publishing credentials.
+- [x] Move real signing configuration out of static application configuration.
+  - [x] Define environment variable names for local signing.
+  - [x] Define repository secrets for CI signing.
+  - [x] Document local and CI release-signing setup without publishing credentials.
 - [ ] Confirm the documentation-folder convention.
   - [ ] Decide whether BigfootDS templates standardise on lowercase `documentation/`.
   - [ ] Apply the decision consistently to this template and related guidance.
