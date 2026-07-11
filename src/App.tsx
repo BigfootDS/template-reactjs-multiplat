@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Link, NavLink, Outlet, Route, Routes } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import ElectronTitleBar from './components/ElectronTitleBar'
 import './App.css'
 
@@ -9,21 +10,22 @@ const DiagnosticsPage = lazy(() => import('./pages/DiagnosticsPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
-const navigationItems = [
-  { to: '/', label: 'Home', end: true },
-  { to: '/settings', label: 'Settings' },
-  { to: '/diagnostics', label: 'Diagnostics' },
-  { to: '/about', label: 'About' },
-]
-
 function AppLayout() {
+  const { t } = useTranslation()
+  const navigationItems = [
+    { to: '/', label: t('navigation_home'), end: true },
+    { to: '/settings', label: t('navigation_settings') },
+    { to: '/diagnostics', label: t('navigation_diagnostics') },
+    { to: '/about', label: t('navigation_about') },
+  ]
+
   return (
     <div className="app-shell">
-      <a className="skip-link" href="#main-content">Skip to content</a>
+      <a className="skip-link" href="#main-content">{t('app_skip_to_content')}</a>
       <ElectronTitleBar />
       <header className="app-header">
         <Link className="brand" to="/">BigfootDS Template</Link>
-        <nav aria-label="Primary navigation">
+        <nav aria-label={t('navigation_label')}>
           <ul className="navigation-list">
             {navigationItems.map(({ to, label, end }) => (
               <li key={to}>
@@ -40,11 +42,11 @@ function AppLayout() {
         </nav>
       </header>
       <main className="page-content" id="main-content" tabIndex={-1}>
-        <Suspense fallback={<p className="page-loading">Loading page…</p>}>
+        <Suspense fallback={<p className="page-loading">{t('app_loading')}</p>}>
           <Outlet />
         </Suspense>
       </main>
-      <footer className="app-footer">Browser-first React app shell</footer>
+      <footer className="app-footer">{t('app_footer')}</footer>
     </div>
   )
 }

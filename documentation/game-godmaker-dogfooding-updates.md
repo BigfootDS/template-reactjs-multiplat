@@ -96,10 +96,10 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Compare the plain-CSS and Mantine template tracks.
   - [x] Record the plain-CSS default decision and Mantine's maintenance cost.
   - [x] Add a persisted light and dark CSS theme example without adding a Mantine provider.
-- [ ] Create an optional localisation recipe.
-  - [ ] Add a minimal `i18next` and `react-i18next` example.
-  - [ ] Add a language provider and one English translation file.
-  - [ ] Decide whether generated per-language files and a split script are worth maintaining.
+- [x] Create an optional localisation recipe.
+  - [x] Add a minimal `i18next` and `react-i18next` example.
+  - [x] Add a language provider and one English translation file.
+  - [x] Generate per-language files and a manifest from one checked-in master JSON file with a split script.
 - [ ] Create a dependency licence and credits workflow.
   - [ ] Choose a licence-data generation approach.
   - [ ] Add a generated-data location and ignore rules.

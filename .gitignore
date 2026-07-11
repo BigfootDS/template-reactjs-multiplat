@@ -30,6 +30,9 @@ dist-electron/
 playwright-report/
 test-results/
 
+# Generated from src/utils/localisation/i18nLocalization.json.
+src/utils/localisation/generated/
+
 # Generated from assets/icon.svg by `npm run capacitor:android:prepare:assets`.
 android/app/src/main/res/drawable*/splash.png
 android/app/src/main/res/drawable/ic_launcher_background.xml

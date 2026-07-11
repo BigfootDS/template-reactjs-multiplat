@@ -29,7 +29,9 @@ This repository is a browser-first React template that can also ship through Ele
 - Put persistence behind an application-facing adapter. React components should not choose between `localStorage`, IndexedDB, OPFS, or a native store themselves.
 - Settings use one versioned entity behind a capability-selected repository: SQLocal and Kysely on isolated OPFS-capable web and Electron builds, IndexedDB on Capacitor-style or fallback runtimes. Keep SQLocal, Kysely, and IndexedDB calls out of React components.
 - Use plain CSS for the default UI. Keep shared colour tokens in `src/index.css`, and apply the persisted `display.theme` setting through the document root's `data-theme` attribute. Do not add Mantine or another theme provider unless the generated product explicitly adopts it.
-- Treat Mantine, localisation, Steam, store deployment, and similar stacks as opt-in directions. They are not default dependencies.
+- Localisation uses `src/utils/localisation/i18nLocalization.json` as its only source of truth. Run `npm run localisation:split` after changing it; never edit or commit `src/utils/localisation/generated/`.
+- Use `useTranslation()` and stable localisation keys for user-facing UI content. `LanguageProvider` synchronises the persisted `settings.language.code` value with i18next and the document language attributes.
+- Treat Mantine, Steam, store deployment, and similar stacks as opt-in directions. They are not default dependencies. A generated project that does not need localisation may remove the included English-only recipe as one deliberate cleanup.
 - Keep a source icon and logo outside generated platform output. Do not hand-edit generated Capacitor, Electron, or store assets.
 - Never commit signing keys, passwords, API keys, app IDs for a real product, or other credentials. Read values from local environment configuration or CI secrets.
 

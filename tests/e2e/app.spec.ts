@@ -6,6 +6,8 @@ test('renders the routed app shell and primary navigation', async ({ page }) => 
   await page.goto('/')
 
   await expect(page).toHaveTitle('BigfootDS ReactJS Multiplatform Template')
+  await expect(page.locator('html')).toHaveAttribute('dir', 'ltr')
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   await expect(page.getByRole('heading', { name: 'Start with a real app shell' })).toBeVisible()
 
   const navigation = page.getByRole('navigation', { name: 'Primary navigation' })
@@ -14,6 +16,7 @@ test('renders the routed app shell and primary navigation', async ({ page }) => 
   await expect(page).toHaveURL(/\/settings$/)
   await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
   await expect(navigation.getByRole('link', { name: 'Settings' })).toHaveAttribute('aria-current', 'page')
+  await expect(page.getByLabel('Interface language')).toHaveValue('en')
 })
 
 test('renders every browser route and the not-found page', async ({ page }) => {
