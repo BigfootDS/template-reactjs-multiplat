@@ -74,6 +74,8 @@ If you need platform behaviour, read [Platform architecture](documentation/platf
 
 [`AGENTS.md`](AGENTS.md) is the working agreement for AI agents and human contributors. It covers architecture boundaries, generated output, verification, and documentation expectations.
 
+Keep focused repository guides in the lowercase `documentation/` folder. Use lowercase kebab-case filenames, such as `platform-architecture.md`; `README.md` and `AGENTS.md` are the root-level entry points.
+
 The focused guides are:
 
 - [Platform architecture](documentation/platform-architecture.md)

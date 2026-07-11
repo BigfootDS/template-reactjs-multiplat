@@ -65,5 +65,6 @@ Use the smallest relevant command while working, then run the broader checks bef
 
 - Update the guide that describes a changed architectural decision or workflow in the same change.
 - Keep `README.md` focused on getting a project running and finding its way around.
+- Keep focused repository guides in the lowercase `documentation/` directory, with lowercase kebab-case `.md` filenames such as `platform-architecture.md`. `README.md` and `AGENTS.md` remain root-level entry points.
 - Put durable implementation rules here in `AGENTS.md`.
 - Put concrete, unfinished work in the dogfooding backlog as checkbox tasks with substeps. Do not hide rules, design notes, or open-ended guidance inside a task list.

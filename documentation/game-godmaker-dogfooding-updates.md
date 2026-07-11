@@ -115,6 +115,6 @@ Architecture rules, platform guidance, testing conventions, persistence notes, r
   - [x] Define environment variable names for local signing.
   - [x] Define repository secrets for CI signing.
   - [x] Document local and CI release-signing setup without publishing credentials.
-- [ ] Confirm the documentation-folder convention.
-  - [ ] Decide whether BigfootDS templates standardise on lowercase `documentation/`.
-  - [ ] Apply the decision consistently to this template and related guidance.
+- [x] Confirm the documentation-folder convention.
+  - [x] Decide whether BigfootDS templates standardise on lowercase `documentation/`.
+  - [x] Apply the decision consistently to this template and related guidance.
