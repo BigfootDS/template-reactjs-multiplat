@@ -8,6 +8,12 @@ Testing answers whether the application behaves correctly. Packaging answers whe
 
 `CI - Test` and `Release - Build` are reusable workflows. The two release triggers below call them rather than copying their jobs, which keeps automatic and manual release behaviour in sync.
 
+## Dependency maintenance
+
+Use `npm install` for intentional manifest updates and refresh the tracked licence snapshot with `npm run project:npmcompliance:update`. Keep the seven-day release-age policy in `.npmrc`; use a one-off `--min-release-age=0` only when installing reviewed newer releases or the reviewed lockfile. Run lint, browser tests and `npm run electron:test` after runtime upgrades, then check platform assets, native sync and packaging where the required tools are available.
+
+Capver 0.1.5 pins older build-time packages. The manifest scopes overrides to Capver for `@trapezedev/project` 7.1.13, `systeminformation` 5.33.23 and `zod` 4.6.7 to use patched releases within their existing major versions. Recheck these overrides when Capver updates its dependencies, and verify both `capacitor:version:sync` and `capacitor:version:check` before removing them.
+
 ## Choose one release trigger before publishing
 
 The template deliberately includes both release triggers. Pick one before the first production release, then delete the other trigger file:

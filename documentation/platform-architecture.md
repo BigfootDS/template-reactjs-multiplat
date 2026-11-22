@@ -38,6 +38,8 @@ The template currently supports minimise, maximise, close, restart, and full-scr
 
 ## Electron window defaults
 
+The template uses Electron 45. macOS builds require macOS 13 or newer following the [Electron 44 platform support change](https://www.electronjs.org/docs/latest/breaking-changes#removed-macos-12-support). Sandboxed preloads must use browser APIs or bundled dependencies for the Node shims [removed in Electron 45](https://www.electronjs.org/docs/latest/breaking-changes#removed-nodejs-module-shims-and-buffer-setimmediate-clearimmediate-globals-in-sandboxed-preload-scripts). The current preload uses Electron and the bundled IPC definitions only.
+
 Electron reads its title, dimensions, menu preference, and packaged cross-origin isolation setting from the `bigfootds` metadata block in `package.json`. The renderer receives only the safe application name and version at build time. Development-only conveniences, including detached DevTools, stay behind a development check.
 
 The frameless template disables the default application menu because the renderer title bar supplies the window controls. Keep a native menu only when the product has commands that need it.

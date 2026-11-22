@@ -28,6 +28,12 @@ Browser-route and Electron-style hash-route coverage belong in the default suite
 
 Native version synchronisation has its own deterministic check. Run `npm run capacitor:version:sync` followed by `npm run capacitor:version:check` whenever `package.json` changes version. The Android build command runs the sync step before Capacitor syncs or Gradle builds the project.
 
+## Real Electron smoke test
+
+Run `npm run electron:test` on a desktop host to build and launch the actual Electron runtime against the production `file://` entry point. The test uses a fresh profile under ignored `test-results/`, verifies the preload-backed title bar, hash navigation, persisted theme after reload, real maximise IPC and the lazy Credits route. It closes the application after the check.
+
+This complements the browser suite's preload mock, which cannot detect Electron runtime or preload compatibility failures. Linux CI needs a display server such as Xvfb to run this desktop test. The browser CI job continues to run the Chromium suite.
+
 ## CI expectation
 
 Testing belongs before release packaging. A testing workflow should install with `npm ci`, run `npm run react:lint`, run `npm run react:test:e2e`, and upload Playwright reports when a job fails or is not cancelled.

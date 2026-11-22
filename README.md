@@ -15,10 +15,14 @@ flowchart TD
 
 ## Quick start
 
+Use Node.js 24 LTS and npm. The direct dependencies require Node.js 22.22.0 or newer; CI uses Node.js 24.
+
 ```powershell
-npm install
+npm ci --min-release-age=0
 npm run react:dev
 ```
+
+The install command uses the reviewed lockfile, matching CI. The repository keeps a seven-day minimum age for normal dependency selection; the one-off override also allows a fresh checkout when a reviewed lockfile includes a newer release. Use `npm install` when intentionally changing dependencies.
 
 Then open the local URL printed by Vite. Before handing work over, run:
 
@@ -44,6 +48,7 @@ The end-to-end command builds the app, starts a production preview on `127.0.0.1
 | Check Android version fields against `package.json` | `npm run capacitor:version:check` |
 | Create an ignored local environment template | `npm run setup:env` |
 | Run the Playwright browser suite | `npm run react:test:e2e` |
+| Test the production Electron app and real preload | `npm run electron:test` |
 | Open the Playwright test UI | `npm run react:test:e2e:ui` |
 | Synchronise and build Android | `npm run capacitor:android:build` |
 | Build a locally signed Android AAB | `npm run capacitor:android:build:signed` |

@@ -25,6 +25,8 @@ The script writes one JSON file per language and a `manifest.json` into `src/uti
 
 `i18next` is initialised in `src/utils/localisation/i18n.ts`, with `react-i18next` providing `useTranslation()`. English is bundled as the immediate fallback. If a project adds another language, Vite dynamically imports its generated file only when it becomes active.
 
+With i18next 27, an empty translated string also falls back to English. Keep that in mind when preparing translations; use an explicit UI decision when content should be hidden. See the [i18next 27 migration guide](https://www.i18next.com/misc/migration-guide#v26.x.x-to-v27.0.0) for the changed defaults.
+
 `LanguageProvider` reads the existing persisted `settings.language.code` field. It changes the active i18next language and updates the document's `lang` and `dir` attributes. The Settings page reads its language options from the generated manifest, so a new language becomes selectable once it is added to the master file and regenerated.
 
 Use keys for user-facing UI content:
