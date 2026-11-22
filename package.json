@@ -99,7 +99,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
     "electron": "^45.4.1",
-    "electron-builder": "^26.18.0",
+    "electron-builder": "^26.18.1",
     "oxlint": "^1.94.0",
     "oxlint-tsgolint": "^7.0.2008",
     "typescript": "^7.0.2",
@@ -117,5 +117,8 @@
   "main": "dist-electron/main.js",
   "capver": {
     "pattern": "MMmmmmppp"
+  },
+  "allowScripts": {
+    "electron-winstaller@5.4.0": true
   }
 }
