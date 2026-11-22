@@ -203,13 +203,12 @@ jobs:
   build-windows-installer:
     needs: [build-react, draft-release]
     name: Build for Windows (Installer)
-    runs-on: ubuntu-latest
-    container: electronuserland/builder:wine
+    runs-on: windows-latest
+    defaults:
+      run:
+        # Keep the POSIX artefact discovery commands working on the native runner.
+        shell: bash
     steps:
-      # Fix for Wine permissions in GitHub Actions job runner environments
-      - name: Preserve $HOME set in the container
-        run: echo HOME=/root >> "$GITHUB_ENV"
-
       # Clone the repo into the action runner 
       - uses: actions/checkout@v7.0.0
         with:
@@ -218,10 +217,10 @@ jobs:
       # Set up the NodeJS project workspace
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: latest
+          node-version: 24
 
       # Set up the ReactJS app dependencies
-      - run: npm install
+      - run: npm ci --min-release-age=0
 
       # If this were any other tech stack, we would grab the built React "dist" folder
       # from the GitHub workflow artifact system
@@ -255,14 +254,11 @@ jobs:
   build-windows-portable:
     needs: [build-react, draft-release]
     name: Build for Windows (Portable)
-    runs-on: ubuntu-latest
-    container: electronuserland/builder:wine
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     steps:
-
-      # Fix for Wine permissions in GitHub Actions job runner environments
-      - name: Preserve $HOME set in the container
-        run: echo HOME=/root >> "$GITHUB_ENV"
-
       # Clone the repo into the action runner 
       - uses: actions/checkout@v7.0.0
         with:
@@ -271,10 +267,10 @@ jobs:
       # Set up the NodeJS project workspace
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: latest
+          node-version: 24
 
       # Set up the ReactJS app dependencies
-      - run: npm install
+      - run: npm ci --min-release-age=0
 
       # If this were any other tech stack, we would grab the built React "dist" folder
       # from the GitHub workflow artifact system

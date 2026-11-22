@@ -27,6 +27,8 @@ Keep `.github/workflows/ci_test.yaml` and `.github/workflows/ci_build.yaml` in e
 
 ## Release artefacts
 
+The Windows installer and portable jobs run on `windows-latest` with Node.js 24 and `npm ci --min-release-age=0`. They build natively, so packaging does not depend on Wine or a Linux Docker container. Both jobs explicitly use Git Bash for their existing `find`, `basename` and step-output commands; changing the runner without keeping that shell would send those commands to PowerShell. GitHub documents the [available workflow shells](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun), and electron-builder documents [Wine's role in cross-platform builds](https://www.electron.build/v26/docs/troubleshooting/#docker--cross-platform-builds).
+
 `Release - Build` creates the version bump, reads `bigfootds.productName` and the bumped package `version` for the human-facing GitHub release title, records the auto-commit SHA as `latest_commit`, then checks out that exact SHA in every packaging and publishing job. That means the version in `package.json`, the release tag, and every uploaded installer come from the same commit.
 
 Upload build artefacts once, then reuse those artefacts for release publishing. Rebuilding in deployment jobs makes it harder to know which commit produced what users download.
